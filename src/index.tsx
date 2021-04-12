@@ -1,12 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { RouterPage } from './pages/RouterPage';
 import './index.css';
+import { RouterPage } from './pages/RouterPage';
 import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
   <React.StrictMode>
-    <RouterPage />
+    <div className="bg-gradient-root">
+      <RouterPage />
+    </div>
   </React.StrictMode>,
   document.getElementById('root')
 );

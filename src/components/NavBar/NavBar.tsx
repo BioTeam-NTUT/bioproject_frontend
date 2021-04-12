@@ -1,7 +1,7 @@
-import {
-    NavLink,
-    Link
-} from 'react-router-dom';
+// import {
+//     NavLink,
+//     Link
+// } from 'react-router-dom';
 
 const NavBar = (props: {}) => {
     return (

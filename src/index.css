@@ -1,17 +1,20 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+/* ./src/index.css */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply font-sans;
+    @apply antialiased;
+  }
+  code {
+    @apply font-mono;
+  }
 }
 
-#root {
-  background: linear-gradient(241.75deg, rgba(113, 107, 251, 0.25) 11.85%, rgba(107, 126, 251, 0.05) 43.65%), #333D5F;
-}
-
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+@responsive {
+  .bg-gradient-root {
+    background: linear-gradient(241.75deg, rgba(113, 107, 251, 0.25) 11.85%, rgba(107, 126, 251, 0.05) 43.65%), #333D5F;
+  }
 }
