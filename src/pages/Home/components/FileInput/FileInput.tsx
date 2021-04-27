@@ -1,3 +1,4 @@
+import React from 'react';
 interface PropsDataTypes {
 	fileName: string;
 	hidden: boolean;
