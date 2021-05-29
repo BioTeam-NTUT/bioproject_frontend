@@ -1,8 +1,8 @@
 import React from 'react';
 import { HostList } from '../HostList';
-import { TypeInputs } from '../TypeInputs';
 import { FileInput } from '../FileInput';
 import { RecordInput } from '../RecordInput';
+import { TypeInputs } from '../TypeInputs';
 
 interface PropsDataTypes {
   hostsList: Array<string>;
@@ -266,14 +266,14 @@ class QueryForm extends React.Component<PropsDataTypes, FormDataTypes> {
     return (
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-3 gap-y-5 bg-yellow-50 p-3 rounded min-w-2/3 max-w-screen-lg">
         <div>
-          <label>Select a method to analyze</label>
           <form id={this.props.formName} onSubmit={this.handleSubmit}>
+            <label>Select a method to analyze</label>
             <TypeInputs type={this.state.type} onChange={this.handleTypeChange} />
             {errorFunction(this.state.error.get("textfield"), false, "This field should not be empty.")}
             <textarea rows={2} className="w-full mt-1 rounded focus:ring-0" onChange={this.handleTextChange}></textarea>
             <div className="grid grid-cols-2">
-              <RecordInput records={this.state.requiredRecords} onChange={this.handleRecordChange} errorMessage={errorFunction(this.state.error.get("recordfield"))} />
-              <FileInput hidden={!(this.state.type === "Sequence")} fileName={this.state.fileName} onChange={this.handleFileChange} />
+              {/* <RecordInput records={this.state.requiredRecords} onChange={this.handleRecordChange} errorMessage={errorFunction(this.state.error.get("recordfield"))} /> */}
+              <FileInput hidden={this.state.type !== "Sequence"} fileName={this.state.fileName} onChange={this.handleFileChange} />
             </div>
           </form>
         </div>

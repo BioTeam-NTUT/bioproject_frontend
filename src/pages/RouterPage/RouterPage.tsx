@@ -1,7 +1,8 @@
 import {
     BrowserRouter,
     Route,
-    Switch
+    Switch,
+    Redirect
 } from "react-router-dom";
 import { Home } from '../Home';
 import { About } from '../About';
@@ -12,11 +13,14 @@ const RouterPage = (props: {}) => {
         <BrowserRouter>
             <Header />
             <Switch>
-                <Route path="/about">
-                    <About />
-                </Route>
-                <Route path="/">
+                <Route exact path="/search">
                     <Home />
+                </Route>
+                <Route exact path="/query">
+                    <Home />
+                </Route>
+                <Route exact path="/">
+                  <About />
                 </Route>
             </Switch>
         </BrowserRouter>
