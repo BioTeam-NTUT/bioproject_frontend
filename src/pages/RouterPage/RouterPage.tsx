@@ -6,6 +6,7 @@ import {
 } from "react-router-dom";
 import { Home } from '../Home';
 import { About } from '../About';
+import { Result } from '../Result';
 import { Header } from '../../components/Header';
 
 const RouterPage = (props: {}) => {
@@ -13,6 +14,9 @@ const RouterPage = (props: {}) => {
         <BrowserRouter>
             <Header />
             <Switch>
+                <Route path="/result">
+                    <Result />
+                </Route>
                 <Route path="/about">
                     <About />
                 </Route>
