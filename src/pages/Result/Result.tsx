@@ -1,24 +1,131 @@
 import React from 'react';
+import '@progress/kendo-theme-default/dist/all.css';
 import './Result.css';
-import DataTable from "react-data-table-component";
 import DataGrid from 'react-data-grid';
+import { Calendar } from '@progress/kendo-react-dateinputs'
+import { Grid, GridCellProps, GridColumn as Column } from '@progress/kendo-react-grid';
+import Tree from 'react-d3-tree';
 const $3Dmol = window.$3Dmol;
 class Result extends React.Component<{}, {}> {
     constructor(props: {}) {
       super(props);
     }
-    /* componentDidMount() {
-      let element = $("#about");
-      let config = { backgroundColor: 'orange' };
+    /**
+     * 3D MOL https://3dmol.csb.pitt.edu/doc/tutorial-code.html
+     */
+    componentDidMount() {
+      let element = $("#result_mol");
+      let config = { backgroundColor: 'white' };
       let glviewer = $3Dmol.createViewer( element, config );
-      glviewer.addSphere({ center: {x:0, y:0, z:0}, radius: 10.0, color: 'green' });
-      glviewer.zoomTo();
-      glviewer.render();
-      glviewer.zoom(0.8, 2000);
-    } */
+      let pdbUri = 'https://files.rcsb.org/view/6OJN.pdb';
+      jQuery.ajax( pdbUri, { 
+        success: function(data) {
+          let v = glviewer;
+          v.addModel( data, "pdb" );                      
+          v.setStyle({}, {cartoon: {color: 'spectrum'}});  
+          v.zoomTo();                                      
+          v.render();                                     
+          v.zoom(1.2, 1000);                              
+          v.setStyle({chain:'B'},{cartoon:{color:'spectrum'}});
+          v.setStyle({chain:'B',invert:true},{cartoon:{}});
+          v.setStyle({bonds: 0},{sphere:{radius:0.5}}); //water molecules
+          v.setStyle({resn:'PMP',byres:true,expand:5},{stick:{colorscheme:"greenCarbon"}});
+          v.setStyle({resi:["91-95","42-50"]},{cartoon:{color:"green",thickness:1.0}});
+          v.render();
+        },
+        error: function(hdr, status, err) {
+          console.error( "Failed to load PDB " + pdbUri + ": " + err );
+        },
+      });
+    }
     render() {
       return (
-        <DataGrid columns={columns} rows={viruses} />
+        <div className="bg-gradient-root" id="result">
+          <div className="targetGrid">
+            <h1 className="header-text">Target Virus</h1>
+            <Grid
+              style={{ width:'100%' }}
+              data={representativeVirus}
+            >
+              <Column field='name' title='Protein Name' />
+              <Column field='accessionNumber' title='Accession No.'/>
+              <Column field='organism' title='Organism'/>
+              <Column field='taxonomyID' title='Taxonomy ID'/>
+              <Column field='taxonomyPath' title='Taxonomy Path'/>
+              <Column field='knownStructure' title='Known Structure'/>
+            </Grid>
+          </div>
+          <div className="representativeGrid">
+            <h1 className="header-text">Representative Virus</h1>
+            <Grid
+              style={{ width:'100%' }}
+              data={representativeVirus}
+            >
+              <Column field='name' title='Protein Name' />
+              <Column field='accessionNumber' title='Accession No.'/>
+              <Column field='organism' title='Organism'/>
+              <Column field='taxonomyID' title='Taxonomy ID'/>
+              <Column field='taxonomyPath' title='Taxonomy Path'/>
+              <Column field='knownStructure' title='Known Structure'/>
+            </Grid>
+          </div>
+          <div className="treeWrapper">
+            <h1 className="header-text">Hierarchical Tree</h1>
+            <div className="taxanomy_tree">
+              <Tree data={orgChart} orientation="vertical" pathFunc="elbow" nodeSize={{ x: 100, y: 100 }} />
+            </div>
+          </div>
+          <div className="epitope">
+            <div className="epitope_seq">
+              <div className="epitope_seq_filtered">
+                <h1 className="header-text">Filtered Epitope</h1>
+                <Grid
+                  style={{ width:'100%' }}
+                  data={testData}
+                >
+                  <Column field='select' title='Select' 
+                    cell={(props: GridCellProps) => (
+                    <td>
+                      <input
+                        disabled={false}
+                        type="checkbox"
+                        checked={props.dataItem[props.field || ""]}
+                      />
+                      </td>
+                    )}/>
+                  <Column field='range' title='Range'/>
+                  <Column field='aminoAcids' title='Amino Acids'/>
+                </Grid>
+              </div>
+              <div className="epitope_seq_non_filtered">
+                <h1 className="header-text">Non-filtered Epitope</h1>
+                <Grid
+                  style={{ width:'100%' }}
+                  data={testData}
+                >
+                  <Column field='select' title='Select' 
+                    cell={(props: GridCellProps) => (
+                    <td>
+                      <input
+                        disabled={false}
+                        type="checkbox"
+                        checked={props.dataItem[props.field || ""]}
+                      />
+                      </td>
+                    )}/>
+                  <Column field='range' title='Range'/>
+                  <Column field='aminoAcids' title='Amino Acids'/>
+                </Grid>
+              </div>
+            </div>
+            <div className="epitope_mol_graph">
+              <h1 className="header-text">Secondary structure</h1>
+              <div className="epitope_mol" id="result_mol">
+              </div>
+            </div>
+          </div>
+        </div>
+          
       );
     }
   }
@@ -39,22 +146,59 @@ class Result extends React.Component<{}, {}> {
   /**
    * test data
    */
-  let viruses = [
+  let representativeVirus=[
     {
-    name: "Test1",
-    accessionNumber: "testaccess1",
-    organism: "testorganism",
-    taxonomyID: "testTaxonomy",
-    taxonomyPath: "testTaxPath",
-    knownStructure: "testStructure"
-    },
-    {
-      name: "Test2",
-      accessionNumber: "testaccess2",
-      organism: "testorganism2",
-      taxonomyID: "testTaxonomy2",
-      taxonomyPath: "testTaxPath2",
-      knownStructure: "testStructure2"
+      name: "rep",
+      accessionNumber: "testaccessrep",
+      organism: "testorganismrep",
+      taxonomyID: "testTaxonomyrep",
+      taxonomyPath: "testTaxPathrep",
+      knownStructure: "testStructurerep"
     }
-];
+  ];
+  let testData=[
+    {
+      range: "115-120",
+      aminoAcids: "asdasda"
+    }
+  ]
+  /**
+   * d3 tree: https://www.npmjs.com/package/@dkile/react-d3-tree#customizing-the-tree
+   */
+  const orgChart = {
+    name: 'CEO',
+    children: [
+      {
+        name: 'Manager',
+        attributes: {
+          department: 'Production',
+        },
+        children: [
+          {
+            name: 'Foreman',
+            attributes: {
+              department: 'Fabrication',
+            },
+            children: [
+              {
+                name: 'Worker',
+              },
+            ],
+          },
+          {
+            name: 'Foreman',
+            attributes: {
+              department: 'Assembly',
+            },
+            children: [
+              {
+                name: 'Worker',
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  };
+  
 export default Result;
