@@ -1,3 +1,3 @@
-import VirusData from './VirusData';
+import VirusData from "./VirusData";
 
 export { VirusData };

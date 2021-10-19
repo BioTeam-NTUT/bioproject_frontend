@@ -1,20 +1,20 @@
-.virusName{
+.virusName {
     font-size: 36px;
 }
 
-.virusProperty{
+.virusProperty {
     font-size: 24px;
 }
 a:link {
     color: blue;
-  }
-  
+}
+
 /* visited link */
 a:visited {
     color: purple;
 }
 
-.seperateExpression{
+.seperateExpression {
     color: red;
     font-size: 48px;
     font-weight: 1000;
