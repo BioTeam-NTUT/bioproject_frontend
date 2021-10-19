@@ -1,7 +1,7 @@
 import React from 'react';
 import '@progress/kendo-theme-default/dist/all.css';
 import './Result.css';
-import VirusData from './components/VirusData/FileInput/VirusData';
+import VirusData from './components/VirusData/VirusData';
 import DataGrid from 'react-data-grid';
 import { Calendar } from '@progress/kendo-react-dateinputs'
 import { Grid, GridCellProps, GridColumn as Column } from '@progress/kendo-react-grid';
