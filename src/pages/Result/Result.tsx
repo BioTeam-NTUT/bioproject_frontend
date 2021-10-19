@@ -1,6 +1,7 @@
 import React from 'react';
 import '@progress/kendo-theme-default/dist/all.css';
 import './Result.css';
+import VirusData from './components/VirusData/FileInput/VirusData';
 import DataGrid from 'react-data-grid';
 import { Calendar } from '@progress/kendo-react-dateinputs'
 import { Grid, GridCellProps, GridColumn as Column } from '@progress/kendo-react-grid';
@@ -43,7 +44,8 @@ class Result extends React.Component<{}, {}> {
         <div className="bg-gradient-root" id="result">
           <div className="targetGrid">
             <h1 className="header-text">Target Virus</h1>
-            <Grid
+            <VirusData VirusDataInfo={testVirus}></VirusData>
+            {/* <Grid
               style={{ width:'100%' }}
               data={representativeVirus}
             >
@@ -53,7 +55,7 @@ class Result extends React.Component<{}, {}> {
               <Column field='taxonomyID' title='Taxonomy ID'/>
               <Column field='taxonomyPath' title='Taxonomy Path'/>
               <Column field='knownStructure' title='Known Structure'/>
-            </Grid>
+            </Grid> */}
           </div>
           <div className="representativeGrid">
             <h1 className="header-text">Representative Virus</h1>
@@ -156,6 +158,17 @@ class Result extends React.Component<{}, {}> {
       knownStructure: "testStructurerep"
     }
   ];
+  let testVirus=
+    {
+      virusName: "rep",
+      accessionNumber: "testaccessrep",
+      organism: "testorganismrep",
+      taxonomyID: "testTaxonomyrep",
+      taxonomyPath: "testTaxPathrep",
+      knownStructure: "testStructurerep",
+      accessionNumberHyperLink: "https://blast.ncbi.nlm.nih.gov/Blast.cgi#alnHdr_YP_009552282"
+    }
+  ;
   let testData=[
     {
       range: "115-120",
