@@ -1,7 +1,5 @@
-.result {
-    width: 100%;
-    height: 4000px;
-    position: relative;
+#result {
+    padding-bottom: 50px;
 }
 .sequence_title {
     color: white;
@@ -23,6 +21,8 @@
     margin: 30px auto;
     justify-content: space-between;
     block-size: fit-content;
+    padding: 5px;
+    border-radius: 5px;
 }
 .representativeGrid {
     background: #fff;
@@ -31,6 +31,9 @@
     margin: 30px auto;
     justify-content: space-between;
     block-size: fit-content;
+    padding: 5px;
+    padding-bottom: 10px;
+    border-radius: 5px;
 }
 .header-text {
     font-size: larger;
@@ -41,40 +44,50 @@
     height: 600px;
     width: 80%;
     margin: 30px auto;
-    justify-content: space-between;
+    display: flex;
+    flex-direction: column;
+    padding: 5px;
+    border-radius: 5px;
 }
 
 .epitope {
-    height: 600px;
     width: 80%;
     margin: 30px auto;
     display: flex;
     justify-content: space-between;
 }
 .taxanomy_tree {
-    width: 80%;
-    height: 90%;
-    margin: auto;
-    padding: auto;
+    height: 100%;
 }
 .epitope_mol {
-    width: 100%;
-    height: 90%;
+    height: 100%;
     position: relative;
 }
 .epitope_seq {
     width: 45%;
     background: #fff;
-    height: 90%;
+    padding: 8px;
+    border-radius: 5px;
 }
 .epitope_mol_graph {
     width: 50%;
-    height: 90%;
     background: #fff;
+    padding: 5px;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
 }
-.epitope_seq_filtered {
-    height: 20%;
+
+.k-checkbox:checked:hover,
+.k-checkbox:checked:focus {
+    background-color: #ff6358 !important;
+    border-color: #ff6358 !important;
 }
-.epitope_seq_non_filtered {
-    height: 70%;
+
+.k-checkbox:checked::before {
+    transform: none;
+}
+
+.k-checkbox::before {
+    content: "";
 }

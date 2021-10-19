@@ -1,26 +1,45 @@
 import React from "react";
-import "@progress/kendo-theme-default/dist/all.css";
+import "@progress/kendo-theme-default/scss/grid/_index.scss";
 import "./Result.css";
 import VirusData from "./components/VirusData/VirusData";
-import DataGrid from "react-data-grid";
-import { Calendar } from "@progress/kendo-react-dateinputs";
 import {
     Grid,
-    GridCellProps,
     GridColumn as Column,
+    getSelectedState,
+    GridSelectionChangeEvent,
 } from "@progress/kendo-react-grid";
+
+import { getter } from "@progress/kendo-react-common";
+
 import Tree from "react-d3-tree";
 const $3Dmol = window.$3Dmol;
-class Result extends React.Component<{}, {}> {
+
+interface ResultDataTypes {
+    selectedFilteredEpitopeState: { [id: string]: boolean | number[] };
+    selectedNonFiltedEpitopeState: { [id: string]: boolean | number[] };
+}
+
+class Result extends React.Component<{}, ResultDataTypes> {
     constructor(props: {}) {
         super(props);
+
+        this.state = {
+            selectedFilteredEpitopeState: {},
+            selectedNonFiltedEpitopeState: {}
+        };
+
+        this.handleFiltedEpitopeSelectionChanged = this.handleFiltedEpitopeSelectionChanged.bind(this);
+        this.handleNonFiltedEpitopeSelectionChanged = this.handleNonFiltedEpitopeSelectionChanged.bind(this);
     }
     /**
      * 3D MOL https://3dmol.csb.pitt.edu/doc/tutorial-code.html
      */
     componentDidMount() {
         let element = $("#result_mol");
-        let config = { backgroundColor: "white" };
+        let config = { 
+            backgroundColor: "white",
+            position: "none"
+        };
         let glviewer = $3Dmol.createViewer(element, config);
         let pdbUri = "https://files.rcsb.org/view/6OJN.pdb";
         jQuery.ajax(pdbUri, {
@@ -49,9 +68,34 @@ class Result extends React.Component<{}, {}> {
             },
         });
     }
+
+    getNewSelectedState(event: GridSelectionChangeEvent, selectedState: { [id: string]: boolean | number[] }) {
+        return getSelectedState({
+            event,
+            selectedState: selectedState,
+            dataItemKey: "id"
+        });
+    }
+
+    handleFiltedEpitopeSelectionChanged(event: GridSelectionChangeEvent) {
+        const newState = this.getNewSelectedState(event, this.state.selectedFilteredEpitopeState);        
+
+        this.setState({
+            selectedFilteredEpitopeState: newState
+        });
+    }
+
+    handleNonFiltedEpitopeSelectionChanged(event: GridSelectionChangeEvent) {
+        const newState = this.getNewSelectedState(event, this.state.selectedNonFiltedEpitopeState);        
+
+        this.setState({
+            selectedNonFiltedEpitopeState: newState
+        });
+    }
+
     render() {
         return (
-            <div className="bg-gradient-root" id="result">
+            <div id="result">
                 <div className="targetGrid">
                     <h1 className="header-text">Target Virus</h1>
                     <VirusData VirusDataInfo={testVirus}></VirusData>
@@ -90,6 +134,12 @@ class Result extends React.Component<{}, {}> {
                             orientation="vertical"
                             pathFunc="elbow"
                             nodeSize={{ x: 100, y: 100 }}
+                            translate={
+                                {
+                                    x: 600,
+                                    y: 100
+                                }
+                            }
                         />
                     </div>
                 </div>
@@ -97,23 +147,30 @@ class Result extends React.Component<{}, {}> {
                     <div className="epitope_seq">
                         <div className="epitope_seq_filtered">
                             <h1 className="header-text">Filtered Epitope</h1>
-                            <Grid style={{ width: "100%" }} data={testData}>
+                            <Grid
+                                style={{ height: "300px" }} 
+                                data={
+                                    testDataForFiltered.map(item => ({
+                                        ...item,
+                                        ["selected"]: this.state.selectedFilteredEpitopeState[(getter("id"))(item)]
+                                    }))
+                                }
+                                dataItemKey={ "id" }
+                                selectable={{
+                                    enabled: true,
+                                    cell: false,
+                                    drag: true,
+                                    mode: "multiple"
+                                }}
+                                selectedField={ "selected" }
+                                onSelectionChange={ this.handleFiltedEpitopeSelectionChanged } 
+                            >
                                 <Column
-                                    field="select"
+                                    field="selected"
                                     title="Select"
-                                    cell={(props: GridCellProps) => (
-                                        <td>
-                                            <input
-                                                disabled={false}
-                                                type="checkbox"
-                                                checked={
-                                                    props.dataItem[
-                                                        props.field || ""
-                                                    ]
-                                                }
-                                            />
-                                        </td>
-                                    )}
+                                    headerSelectionValue={
+                                        false
+                                    }
                                 />
                                 <Column field="range" title="Range" />
                                 <Column
@@ -126,23 +183,30 @@ class Result extends React.Component<{}, {}> {
                             <h1 className="header-text">
                                 Non-filtered Epitope
                             </h1>
-                            <Grid style={{ width: "100%" }} data={testData}>
+                            <Grid
+                                style={{ height: "300px" }} 
+                                data={
+                                    testDataForNonFiltered.map(item => ({
+                                        ...item,
+                                        ["selected"]: this.state.selectedNonFiltedEpitopeState[(getter("id"))(item)]
+                                    }))
+                                }
+                                dataItemKey={ "id" }
+                                selectable={{
+                                    enabled: true,
+                                    cell: false,
+                                    drag: true,
+                                    mode: "multiple"
+                                }}
+                                selectedField={ "selected" }
+                                onSelectionChange={ this.handleNonFiltedEpitopeSelectionChanged } 
+                            >
                                 <Column
-                                    field="select"
+                                    field="selected"
                                     title="Select"
-                                    cell={(props: GridCellProps) => (
-                                        <td>
-                                            <input
-                                                disabled={false}
-                                                type="checkbox"
-                                                checked={
-                                                    props.dataItem[
-                                                        props.field || ""
-                                                    ]
-                                                }
-                                            />
-                                        </td>
-                                    )}
+                                    headerSelectionValue={
+                                        false
+                                    }
                                 />
                                 <Column field="range" title="Range" />
                                 <Column
@@ -188,6 +252,7 @@ let representativeVirus = [
         knownStructure: "testStructurerep",
     },
 ];
+
 let testVirus = {
     virusName: "rep",
     accessionNumber: "testaccessrep",
@@ -198,12 +263,53 @@ let testVirus = {
     accessionNumberHyperLink:
         "https://blast.ncbi.nlm.nih.gov/Blast.cgi#alnHdr_YP_009552282",
 };
-let testData = [
+
+let testDataForFiltered = [
     {
+        id: "1",
         range: "115-120",
         aminoAcids: "asdasda",
     },
+    {
+        id: "2",
+        range: "130-144",
+        aminoAcids: "asdasdawgfvbold",
+    },
+    {
+        id: "3",
+        range: "115-120",
+        aminoAcids: "asdasda",
+    },
+    {
+        id: "4",
+        range: "115-120",
+        aminoAcids: "asdasda",
+    }
 ];
+
+let testDataForNonFiltered = [
+    {
+        id: "1",
+        range: "115-120",
+        aminoAcids: "asdasda",
+    },
+    {
+        id: "2",
+        range: "130-144",
+        aminoAcids: "asdasdawgfvbold",
+    },
+    {
+        id: "3",
+        range: "115-120",
+        aminoAcids: "asdasda",
+    },
+    {
+        id: "4",
+        range: "115-120",
+        aminoAcids: "asdasda",
+    }
+];
+
 /**
  * d3 tree: https://www.npmjs.com/package/@dkile/react-d3-tree#customizing-the-tree
  */

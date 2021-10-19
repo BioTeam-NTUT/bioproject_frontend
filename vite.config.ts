@@ -6,4 +6,8 @@ import WindiCSS from "vite-plugin-windicss";
 export default defineConfig({
     mode: "development",
     plugins: [reactRefresh(), WindiCSS()],
+    server: {
+        host: "127.0.0.1",
+        port: 8888
+    }
 });
