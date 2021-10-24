@@ -12,11 +12,14 @@ import {
 import { getter } from "@progress/kendo-react-common";
 
 import Tree from "react-d3-tree";
+import { contains } from "jquery";
 const $3Dmol = window.$3Dmol;
 
 interface ResultDataTypes {
-    selectedFilteredEpitopeState: { [id: string]: boolean | number[] };
-    selectedNonFiltedEpitopeState: { [id: string]: boolean | number[] };
+    selectedFilteredEpitopeState: { [string: string]: boolean | number[] };
+    selectedNonFiltedEpitopeState: { [string: string]: boolean | number[] };
+    molglviewer:any;
+    selectedFilteredEpitopeRange:{ [range: string]: boolean | number[] }
 }
 
 class Result extends React.Component<{}, ResultDataTypes> {
@@ -25,11 +28,14 @@ class Result extends React.Component<{}, ResultDataTypes> {
 
         this.state = {
             selectedFilteredEpitopeState: {},
-            selectedNonFiltedEpitopeState: {}
+            selectedNonFiltedEpitopeState: {},
+            selectedFilteredEpitopeRange: {},
+            molglviewer:{}
         };
 
         this.handleFiltedEpitopeSelectionChanged = this.handleFiltedEpitopeSelectionChanged.bind(this);
         this.handleNonFiltedEpitopeSelectionChanged = this.handleNonFiltedEpitopeSelectionChanged.bind(this);
+
     }
     /**
      * 3D MOL https://3dmol.csb.pitt.edu/doc/tutorial-code.html
@@ -46,48 +52,81 @@ class Result extends React.Component<{}, ResultDataTypes> {
             success: function (data) {
                 let v = glviewer;
                 v.addModel(data, "pdb");
-                v.setStyle({}, { cartoon: { color: "spectrum" } });
+                v.setStyle({}, { cartoon: { color: "red" } });
                 v.zoomTo();
                 v.render();
                 v.zoom(1.2, 1000);
-                v.setStyle({ chain: "B" }, { cartoon: { color: "spectrum" } });
-                v.setStyle({ chain: "B", invert: true }, { cartoon: {} });
-                v.setStyle({ bonds: 0 }, { sphere: { radius: 0.5 } }); //water molecules
-                v.setStyle(
+                v.setStyle({ chain: "B" }, { cartoon: { hidden:true } });
+                v.setStyle({ chain: "C" }, { cartoon: { hidden:true } });
+                v.setStyle({ chain: "D" }, { cartoon: { hidden:true } });
+                v.setStyle({ chain: "A" }, { cartoon: {color : "spectrum"} });
+                //v.setStyle({ bonds: 0 }, { sphere: { radius: 0.5 } }); //water molecules
+                /* v.setStyle(
                     { resn: "PMP", byres: true, expand: 5 },
                     { stick: { colorscheme: "greenCarbon" } }
-                );
-                v.setStyle(
-                    { resi: ["91-95", "42-50"] },
-                    { cartoon: { color: "green", thickness: 1.0 } }
-                );
+                ); */
+                /* v.setStyle(
+                    { resi: [["91-95", "42-50"]] },
+                    { stick: { color: "black", thickness: 1.0 } }
+                ); */
                 v.render();
             },
             error: function (hdr, status, err) {
                 console.error("Failed to load PDB " + pdbUri + ": " + err);
             },
         });
+        this.setState({molglviewer: glviewer});
     }
-
     getNewSelectedState(event: GridSelectionChangeEvent, selectedState: { [id: string]: boolean | number[] }) {
         return getSelectedState({
             event,
             selectedState: selectedState,
-            dataItemKey: "id"
+            dataItemKey: "range"
         });
     }
-
+    parseRange(range:string){
+        let arr = range.split("-");
+        let startPosition = parseInt(arr[0]);
+        let endPosition = parseInt(arr[1]);
+        return [startPosition, endPosition];
+    }
+    SetVirusStructureStyle(object: Object){
+        let v = this.state.molglviewer;
+        for (const [key, value] of Object.entries(object)) {
+            let range = this.parseRange(key);
+            if(value){
+                for(let i = range[0];i<=range[1];i++){
+                    v.setStyle(
+                        { serial: i },
+                        { sphere: { color: "red" } }
+                    );
+                }
+                /* v.setStyle({ chain: "B", invert: false }, { sphere: {} }); */
+            }
+            else{
+                for(let i = range[0];i<=range[1];i++){
+                    v.setStyle(
+                        { serial: i },
+                        { cartoon: { color: "spectrum" } }
+                    );
+                }
+                //v.setStyle({ chain: "B", invert: false }, { cartoon: {} });
+            }
+            v.render();
+        }  
+    }
     handleFiltedEpitopeSelectionChanged(event: GridSelectionChangeEvent) {
-        const newState = this.getNewSelectedState(event, this.state.selectedFilteredEpitopeState);        
-
+        const newState = this.getNewSelectedState(event, this.state.selectedFilteredEpitopeState);  
+        this.SetVirusStructureStyle(newState);
         this.setState({
             selectedFilteredEpitopeState: newState
         });
+
     }
 
     handleNonFiltedEpitopeSelectionChanged(event: GridSelectionChangeEvent) {
         const newState = this.getNewSelectedState(event, this.state.selectedNonFiltedEpitopeState);        
-
+        this.SetVirusStructureStyle(newState);
         this.setState({
             selectedNonFiltedEpitopeState: newState
         });
@@ -127,13 +166,13 @@ class Result extends React.Component<{}, ResultDataTypes> {
                     </Grid>
                 </div>
                 <div className="treeWrapper">
-                    <h1 className="header-text">Hierarchical Tree</h1>
+                    <h1 className="header-text">Taxanomy Tree</h1>
                     <div className="taxanomy_tree">
                         <Tree
                             data={orgChart}
                             orientation="vertical"
                             pathFunc="elbow"
-                            nodeSize={{ x: 100, y: 100 }}
+                            nodeSize={{ x: 200, y: 100 }}
                             translate={
                                 {
                                     x: 600,
@@ -152,10 +191,10 @@ class Result extends React.Component<{}, ResultDataTypes> {
                                 data={
                                     testDataForFiltered.map(item => ({
                                         ...item,
-                                        ["selected"]: this.state.selectedFilteredEpitopeState[(getter("id"))(item)]
+                                        ["selected"]: this.state.selectedFilteredEpitopeState[(getter("range"))(item)]
                                     }))
                                 }
-                                dataItemKey={ "id" }
+                                dataItemKey={ "range" }
                                 selectable={{
                                     enabled: true,
                                     cell: false,
@@ -188,10 +227,10 @@ class Result extends React.Component<{}, ResultDataTypes> {
                                 data={
                                     testDataForNonFiltered.map(item => ({
                                         ...item,
-                                        ["selected"]: this.state.selectedNonFiltedEpitopeState[(getter("id"))(item)]
+                                        ["selected"]: this.state.selectedNonFiltedEpitopeState[(getter("range"))(item)]
                                     }))
                                 }
-                                dataItemKey={ "id" }
+                                dataItemKey={ "range" }
                                 selectable={{
                                     enabled: true,
                                     cell: false,
@@ -217,7 +256,7 @@ class Result extends React.Component<{}, ResultDataTypes> {
                         </div>
                     </div>
                     <div className="epitope_mol_graph">
-                        <h1 className="header-text">Secondary structure</h1>
+                        <h1 className="header-text">Tertiary Structure</h1>
                         <div className="epitope_mol" id="result_mol"></div>
                     </div>
                 </div>
@@ -244,68 +283,68 @@ const columns = [
  */
 let representativeVirus = [
     {
-        name: "rep",
-        accessionNumber: "testaccessrep",
-        organism: "testorganismrep",
-        taxonomyID: "testTaxonomyrep",
-        taxonomyPath: "testTaxPathrep",
-        knownStructure: "testStructurerep",
+        name: "Lymphocystis disease virus 1",
+        accessionNumber: "P22176",
+        organism: "Lymphocystis disease virus 1 (isolate Darai) (LCDV-1)",
+        taxonomyID: "654922",
+        taxonomyPath: "Viruses › Varidnaviria › Bamfordvirae › Nucleocytoviricota › Megaviricetes › Pimascovirales › Iridoviridae › Alphairidovirinae › Lymphocystivirus › ",
+        knownStructure: ""
     },
+    {
+        name: "Infectious spleen and kidney necrosis virus (ISKNV)",
+        accessionNumber: "testaccessrep",
+        organism: "Infectious spleen and kidney necrosis virus (ISKNV)",
+        taxonomyID: "180170",
+        taxonomyPath: "tesViruses › Varidnaviria › Bamfordvirae › Nucleocytoviricota › Megaviricetes › Pimascovirales › Iridoviridae › Alphairidovirinae › MegalocytivirustTaxPathrep",
+        knownStructure: ""
+    }
 ];
 
 let testVirus = {
-    virusName: "rep",
-    accessionNumber: "testaccessrep",
-    organism: "testorganismrep",
-    taxonomyID: "testTaxonomyrep",
-    taxonomyPath: "testTaxPathrep",
-    knownStructure: "testStructurerep",
+    virusName: "Singapore grouper iridovirus(SGIV)",
+    accessionNumber: "AY521625",
+    organism: "Singapore grouper iridovirus",
+    taxonomyID: "262968",
+    taxonomyPath: "Viruses › Varidnaviria › Bamfordvirae › Nucleocytoviricota › Megaviricetes › Pimascovirales › Iridoviridae › Alphairidovirinae › Ranavirus",
+    knownStructure: "6OJN",
     accessionNumberHyperLink:
         "https://blast.ncbi.nlm.nih.gov/Blast.cgi#alnHdr_YP_009552282",
 };
 
 let testDataForFiltered = [
     {
-        id: "1",
-        range: "115-120",
-        aminoAcids: "asdasda",
+        range: "10-36",
+        aminoAcids: "qikdllvsss",
     },
     {
-        id: "2",
-        range: "130-144",
-        aminoAcids: "asdasdawgfvbold",
+        range: "2-10",
+        aminoAcids: "tdldttlvlv",
     },
     {
-        id: "3",
-        range: "115-120",
-        aminoAcids: "asdasda",
+        range: "3-15",
+        aminoAcids: "sgdlsmlvll",
     },
     {
-        id: "4",
-        range: "115-120",
-        aminoAcids: "asdasda",
+        range: "4-20",
+        aminoAcids: "gviedikhsp",
     }
 ];
 
 let testDataForNonFiltered = [
     {
-        id: "1",
         range: "115-120",
         aminoAcids: "asdasda",
     },
     {
-        id: "2",
         range: "130-144",
         aminoAcids: "asdasdawgfvbold",
     },
     {
-        id: "3",
-        range: "115-120",
+        range: "95-102",
         aminoAcids: "asdasda",
     },
     {
-        id: "4",
-        range: "115-120",
+        range: "115-125",
         aminoAcids: "asdasda",
     }
 ];
@@ -314,35 +353,38 @@ let testDataForNonFiltered = [
  * d3 tree: https://www.npmjs.com/package/@dkile/react-d3-tree#customizing-the-tree
  */
 const orgChart = {
-    name: "CEO",
+    name: "Iridoviridae",
     children: [
         {
-            name: "Manager",
-            attributes: {
-                department: "Production",
-            },
+            name: "Alphairidovirinae",
             children: [
                 {
-                    name: "Foreman",
-                    attributes: {
-                        department: "Fabrication",
-                    },
-                    children: [
-                        {
-                            name: "Worker",
-                        },
-                    ],
+                    name: "Lymphocystivirus"
                 },
                 {
-                    name: "Foreman",
-                    attributes: {
-                        department: "Assembly",
-                    },
+                    name: "Megalocytivirus"
+                },
+                {
+                    name: "Ranavirus",
                     children: [
                         {
-                            name: "Worker",
-                        },
-                    ],
+                            name: "Singapore grouper iridovirus"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            name: "Betairidovirinae",
+            children: [
+                {
+                    name: "Chloriridovirus"
+                },
+                {
+                    name: "Decapodiridovirus"
+                },
+                {
+                    name: "Iridovirus"
                 },
             ],
         },
