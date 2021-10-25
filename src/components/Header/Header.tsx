@@ -5,8 +5,10 @@ import { Link } from "react-router-dom";
 import { NavBar } from "../NavBar";
 
 const Header = (props: {}) => {
+    const itemLists = ["Query", "Search"];
+
     return (
-        <header className="flex justify-between">
+        <header className="flex">
             <Link to="/">
                 <img
                     src={logo}
@@ -14,7 +16,8 @@ const Header = (props: {}) => {
                     alt="logo"
                 />
             </Link>
-            <NavBar />
+
+            <NavBar contents={itemLists} />
         </header>
     );
 };

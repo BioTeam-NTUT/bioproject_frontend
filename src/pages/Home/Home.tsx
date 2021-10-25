@@ -1,6 +1,7 @@
 import React from "react";
 import "./Home.css";
 import { QueryForm } from "./components/QueryForm";
+import { NavBar } from "../../components/NavBar";
 
 interface StateDataTypes {
     hostsList: Array<string>;
