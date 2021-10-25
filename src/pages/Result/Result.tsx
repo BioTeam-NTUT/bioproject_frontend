@@ -12,14 +12,13 @@ import {
 import { getter } from "@progress/kendo-react-common";
 
 import Tree from "react-d3-tree";
-import { contains } from "jquery";
 const $3Dmol = window.$3Dmol;
 
 interface ResultDataTypes {
     selectedFilteredEpitopeState: { [string: string]: boolean | number[] };
     selectedNonFiltedEpitopeState: { [string: string]: boolean | number[] };
-    molglviewer:any;
-    selectedFilteredEpitopeRange:{ [range: string]: boolean | number[] }
+    molglviewer: any;
+    selectedFilteredEpitopeRange: { [range: string]: boolean | number[] };
 }
 
 class Result extends React.Component<{}, ResultDataTypes> {
@@ -30,21 +29,22 @@ class Result extends React.Component<{}, ResultDataTypes> {
             selectedFilteredEpitopeState: {},
             selectedNonFiltedEpitopeState: {},
             selectedFilteredEpitopeRange: {},
-            molglviewer:{}
+            molglviewer: {},
         };
 
-        this.handleFiltedEpitopeSelectionChanged = this.handleFiltedEpitopeSelectionChanged.bind(this);
-        this.handleNonFiltedEpitopeSelectionChanged = this.handleNonFiltedEpitopeSelectionChanged.bind(this);
-
+        this.handleFiltedEpitopeSelectionChanged =
+            this.handleFiltedEpitopeSelectionChanged.bind(this);
+        this.handleNonFiltedEpitopeSelectionChanged =
+            this.handleNonFiltedEpitopeSelectionChanged.bind(this);
     }
     /**
      * 3D MOL https://3dmol.csb.pitt.edu/doc/tutorial-code.html
      */
     componentDidMount() {
         let element = $("#result_mol");
-        let config = { 
+        let config = {
             backgroundColor: "white",
-            position: "none"
+            position: "none",
         };
         let glviewer = $3Dmol.createViewer(element, config);
         let pdbUri = "https://files.rcsb.org/view/6OJN.pdb";
@@ -56,10 +56,10 @@ class Result extends React.Component<{}, ResultDataTypes> {
                 v.zoomTo();
                 v.render();
                 v.zoom(1.2, 1000);
-                v.setStyle({ chain: "B" }, { cartoon: { hidden:true } });
-                v.setStyle({ chain: "C" }, { cartoon: { hidden:true } });
-                v.setStyle({ chain: "D" }, { cartoon: { hidden:true } });
-                v.setStyle({ chain: "A" }, { cartoon: {color : "spectrum"} });
+                v.setStyle({ chain: "B" }, { cartoon: { hidden: true } });
+                v.setStyle({ chain: "C" }, { cartoon: { hidden: true } });
+                v.setStyle({ chain: "D" }, { cartoon: { hidden: true } });
+                v.setStyle({ chain: "A" }, { cartoon: { color: "spectrum" } });
                 //v.setStyle({ bonds: 0 }, { sphere: { radius: 0.5 } }); //water molecules
                 /* v.setStyle(
                     { resn: "PMP", byres: true, expand: 5 },
@@ -75,36 +75,38 @@ class Result extends React.Component<{}, ResultDataTypes> {
                 console.error("Failed to load PDB " + pdbUri + ": " + err);
             },
         });
-        this.setState({molglviewer: glviewer});
+        this.setState({ molglviewer: glviewer });
     }
-    getNewSelectedState(event: GridSelectionChangeEvent, selectedState: { [id: string]: boolean | number[] }) {
+    getNewSelectedState(
+        event: GridSelectionChangeEvent,
+        selectedState: { [id: string]: boolean | number[] }
+    ) {
         return getSelectedState({
             event,
             selectedState: selectedState,
-            dataItemKey: "range"
+            dataItemKey: "range",
         });
     }
-    parseRange(range:string){
+    parseRange(range: string) {
         let arr = range.split("-");
         let startPosition = parseInt(arr[0]);
         let endPosition = parseInt(arr[1]);
         return [startPosition, endPosition];
     }
-    SetVirusStructureStyle(object: Object){
+    SetVirusStructureStyle(object: Object) {
         let v = this.state.molglviewer;
         for (const [key, value] of Object.entries(object)) {
             let range = this.parseRange(key);
-            if(value){
-                for(let i = range[0];i<=range[1];i++){
+            if (value) {
+                for(let i = range[0]; i <= range[1]; i++){
                     v.setStyle(
                         { serial: i },
                         { sphere: { color: "red" } }
                     );
                 }
                 /* v.setStyle({ chain: "B", invert: false }, { sphere: {} }); */
-            }
-            else{
-                for(let i = range[0];i<=range[1];i++){
+            } else {
+                for (let i = range[0]; i <= range[1]; i++) {
                     v.setStyle(
                         { serial: i },
                         { cartoon: { color: "spectrum" } }
@@ -113,22 +115,27 @@ class Result extends React.Component<{}, ResultDataTypes> {
                 //v.setStyle({ chain: "B", invert: false }, { cartoon: {} });
             }
             v.render();
-        }  
+        }
     }
     handleFiltedEpitopeSelectionChanged(event: GridSelectionChangeEvent) {
-        const newState = this.getNewSelectedState(event, this.state.selectedFilteredEpitopeState);  
+        const newState = this.getNewSelectedState(
+            event,
+            this.state.selectedFilteredEpitopeState
+        );
         this.SetVirusStructureStyle(newState);
         this.setState({
-            selectedFilteredEpitopeState: newState
+            selectedFilteredEpitopeState: newState,
         });
-
     }
 
     handleNonFiltedEpitopeSelectionChanged(event: GridSelectionChangeEvent) {
-        const newState = this.getNewSelectedState(event, this.state.selectedNonFiltedEpitopeState);        
+        const newState = this.getNewSelectedState(
+            event,
+            this.state.selectedNonFiltedEpitopeState
+        );
         this.SetVirusStructureStyle(newState);
         this.setState({
-            selectedNonFiltedEpitopeState: newState
+            selectedNonFiltedEpitopeState: newState,
         });
     }
 
@@ -138,8 +145,7 @@ class Result extends React.Component<{}, ResultDataTypes> {
                 <div className="targetGrid">
                     <h1 className="header-text">Target Virus</h1>
                     <VirusData VirusDataInfo={testVirus}></VirusData>
-                    {
-                        /* <Grid
+                    {/* <Grid
                             style={{ width:'100%' }}
                             data={representativeVirus}>
                             <Column field='name' title='Protein Name' />
@@ -148,8 +154,7 @@ class Result extends React.Component<{}, ResultDataTypes> {
                             <Column field='taxonomyID' title='Taxonomy ID'/>
                             <Column field='taxonomyPath' title='Taxonomy Path'/>
                             <Column field='knownStructure' title='Known Structure'/>
-                        </Grid> */
-                    }
+                        </Grid> */}
                 </div>
                 <div className="representativeGrid">
                     <h1 className="header-text">Representative Virus</h1>
@@ -173,12 +178,10 @@ class Result extends React.Component<{}, ResultDataTypes> {
                             orientation="vertical"
                             pathFunc="elbow"
                             nodeSize={{ x: 200, y: 100 }}
-                            translate={
-                                {
-                                    x: 600,
-                                    y: 100
-                                }
-                            }
+                            translate={{
+                                x: 600,
+                                y: 100,
+                            }}
                         />
                     </div>
                 </div>
@@ -187,29 +190,30 @@ class Result extends React.Component<{}, ResultDataTypes> {
                         <div className="epitope_seq_filtered">
                             <h1 className="header-text">Filtered Epitope</h1>
                             <Grid
-                                style={{ height: "300px" }} 
-                                data={
-                                    testDataForFiltered.map(item => ({
-                                        ...item,
-                                        ["selected"]: this.state.selectedFilteredEpitopeState[(getter("range"))(item)]
-                                    }))
-                                }
-                                dataItemKey={ "range" }
+                                style={{ height: "300px" }}
+                                data={testDataForFiltered.map((item) => ({
+                                    ...item,
+                                    ["selected"]:
+                                        this.state.selectedFilteredEpitopeState[
+                                            getter("range")(item)
+                                        ],
+                                }))}
+                                dataItemKey={"range"}
                                 selectable={{
                                     enabled: true,
                                     cell: false,
                                     drag: true,
-                                    mode: "multiple"
+                                    mode: "multiple",
                                 }}
-                                selectedField={ "selected" }
-                                onSelectionChange={ this.handleFiltedEpitopeSelectionChanged } 
+                                selectedField={"selected"}
+                                onSelectionChange={
+                                    this.handleFiltedEpitopeSelectionChanged
+                                }
                             >
                                 <Column
                                     field="selected"
                                     title="Select"
-                                    headerSelectionValue={
-                                        false
-                                    }
+                                    headerSelectionValue={false}
                                 />
                                 <Column field="range" title="Range" />
                                 <Column
@@ -223,29 +227,31 @@ class Result extends React.Component<{}, ResultDataTypes> {
                                 Non-filtered Epitope
                             </h1>
                             <Grid
-                                style={{ height: "300px" }} 
-                                data={
-                                    testDataForNonFiltered.map(item => ({
-                                        ...item,
-                                        ["selected"]: this.state.selectedNonFiltedEpitopeState[(getter("range"))(item)]
-                                    }))
-                                }
-                                dataItemKey={ "range" }
+                                style={{ height: "300px" }}
+                                data={testDataForNonFiltered.map((item) => ({
+                                    ...item,
+                                    ["selected"]:
+                                        this.state
+                                            .selectedNonFiltedEpitopeState[
+                                            getter("range")(item)
+                                        ],
+                                }))}
+                                dataItemKey={"range"}
                                 selectable={{
                                     enabled: true,
                                     cell: false,
                                     drag: true,
-                                    mode: "multiple"
+                                    mode: "multiple",
                                 }}
-                                selectedField={ "selected" }
-                                onSelectionChange={ this.handleNonFiltedEpitopeSelectionChanged } 
+                                selectedField={"selected"}
+                                onSelectionChange={
+                                    this.handleNonFiltedEpitopeSelectionChanged
+                                }
                             >
                                 <Column
                                     field="selected"
                                     title="Select"
-                                    headerSelectionValue={
-                                        false
-                                    }
+                                    headerSelectionValue={false}
                                 />
                                 <Column field="range" title="Range" />
                                 <Column
@@ -287,17 +293,19 @@ let representativeVirus = [
         accessionNumber: "P22176",
         organism: "Lymphocystis disease virus 1 (isolate Darai) (LCDV-1)",
         taxonomyID: "654922",
-        taxonomyPath: "Viruses › Varidnaviria › Bamfordvirae › Nucleocytoviricota › Megaviricetes › Pimascovirales › Iridoviridae › Alphairidovirinae › Lymphocystivirus › ",
-        knownStructure: ""
+        taxonomyPath:
+            "Viruses › Varidnaviria › Bamfordvirae › Nucleocytoviricota › Megaviricetes › Pimascovirales › Iridoviridae › Alphairidovirinae › Lymphocystivirus › ",
+        knownStructure: "",
     },
     {
         name: "Infectious spleen and kidney necrosis virus (ISKNV)",
         accessionNumber: "testaccessrep",
         organism: "Infectious spleen and kidney necrosis virus (ISKNV)",
         taxonomyID: "180170",
-        taxonomyPath: "tesViruses › Varidnaviria › Bamfordvirae › Nucleocytoviricota › Megaviricetes › Pimascovirales › Iridoviridae › Alphairidovirinae › MegalocytivirustTaxPathrep",
-        knownStructure: ""
-    }
+        taxonomyPath:
+            "tesViruses › Varidnaviria › Bamfordvirae › Nucleocytoviricota › Megaviricetes › Pimascovirales › Iridoviridae › Alphairidovirinae › MegalocytivirustTaxPathrep",
+        knownStructure: "",
+    },
 ];
 
 let testVirus = {
@@ -305,7 +313,8 @@ let testVirus = {
     accessionNumber: "AY521625",
     organism: "Singapore grouper iridovirus",
     taxonomyID: "262968",
-    taxonomyPath: "Viruses › Varidnaviria › Bamfordvirae › Nucleocytoviricota › Megaviricetes › Pimascovirales › Iridoviridae › Alphairidovirinae › Ranavirus",
+    taxonomyPath:
+        "Viruses › Varidnaviria › Bamfordvirae › Nucleocytoviricota › Megaviricetes › Pimascovirales › Iridoviridae › Alphairidovirinae › Ranavirus",
     knownStructure: "6OJN",
     accessionNumberHyperLink:
         "https://blast.ncbi.nlm.nih.gov/Blast.cgi#alnHdr_YP_009552282",
@@ -327,7 +336,7 @@ let testDataForFiltered = [
     {
         range: "4-20",
         aminoAcids: "gviedikhsp",
-    }
+    },
 ];
 
 let testDataForNonFiltered = [
@@ -346,7 +355,7 @@ let testDataForNonFiltered = [
     {
         range: "115-125",
         aminoAcids: "asdasda",
-    }
+    },
 ];
 
 /**
@@ -359,32 +368,32 @@ const orgChart = {
             name: "Alphairidovirinae",
             children: [
                 {
-                    name: "Lymphocystivirus"
+                    name: "Lymphocystivirus",
                 },
                 {
-                    name: "Megalocytivirus"
+                    name: "Megalocytivirus",
                 },
                 {
                     name: "Ranavirus",
                     children: [
                         {
-                            name: "Singapore grouper iridovirus"
-                        }
-                    ]
-                }
-            ]
+                            name: "Singapore grouper iridovirus",
+                        },
+                    ],
+                },
+            ],
         },
         {
             name: "Betairidovirinae",
             children: [
                 {
-                    name: "Chloriridovirus"
+                    name: "Chloriridovirus",
                 },
                 {
-                    name: "Decapodiridovirus"
+                    name: "Decapodiridovirus",
                 },
                 {
-                    name: "Iridovirus"
+                    name: "Iridovirus",
                 },
             ],
         },
