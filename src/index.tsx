@@ -1,7 +1,9 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import "jquery";
 import "virtual:windi.css";
 import "./index.css";
+
 import { RouterPage } from "./pages/RouterPage";
 
 ReactDOM.render(

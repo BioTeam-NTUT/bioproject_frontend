@@ -1,51 +1,10 @@
 import React from "react";
 import { HostList } from "../HostList";
+import { TypeInputs } from "../TypeInputs";
 import { FileInput } from "../FileInput";
 import { RecordInput } from "../RecordInput";
-import { TypeInputs } from "../TypeInputs";
-
-interface PropsDataTypes {
-    hostsList: Array<string>;
-    formName: string;
-    onSubmit: (e: FormDataTypes) => void;
-}
-
-interface FormDataTypes extends OutputDataTypes {
-    error: Map<string, boolean>;
-    fileName: string;
-}
-
-interface OutputDataTypes {
-    type: string;
-    text: string;
-    requiredRecords: string;
-    useEmail: boolean;
-    email: string;
-    genTaxonomy: boolean;
-    LE: {
-        threshold: string;
-        minLength: string;
-    };
-    selectedHost: string;
-    fasta?: Blob;
-}
-
-const errorFunction = (
-    error?: boolean,
-    block: boolean = true,
-    errorMessage: string = "Invalid input"
-) => {
-    return (
-        <span
-            className={
-                "font-medium text-red-500 text-xs " +
-                (error ? (block ? "block" : "") : "hidden")
-            }
-        >
-            {errorMessage}
-        </span>
-    );
-};
+import { ErrorHint } from "../ErrorHint";
+import { PropsDataTypes, FormDataTypes, FormFieldNames } from "./index.d";
 
 class QueryForm extends React.Component<PropsDataTypes, FormDataTypes> {
     constructor(props: PropsDataTypes) {
@@ -64,12 +23,12 @@ class QueryForm extends React.Component<PropsDataTypes, FormDataTypes> {
             },
             selectedHost: "",
             error: new Map<string, boolean>([
-                ["textfield", false],
-                ["recordfield", false],
-                ["emailfield", false],
-                ["thresholdfield", false],
-                ["minLengthfield", false],
-                ["listfield", false],
+                [FormFieldNames.TextField, false],
+                [FormFieldNames.RecordField, false],
+                [FormFieldNames.EmailField, false],
+                [FormFieldNames.ThresholdField, false],
+                [FormFieldNames.MinLengthField, false],
+                [FormFieldNames.ListField, false],
             ]),
             fileName: "",
         };
@@ -88,27 +47,27 @@ class QueryForm extends React.Component<PropsDataTypes, FormDataTypes> {
 
     isAllValid() {
         let error = this.state.error;
-        let isInvalid: Boolean = false;
+        let isInvalid: boolean = false;
 
         if (!this.state.fasta && this.state.text === "") {
-            error.set("textfield", true);
+            error.set(FormFieldNames.TextField, true);
             isInvalid = true;
         } else {
-            error.set("textfield", false);
+            error.set(FormFieldNames.TextField, false);
         }
 
         if (this.state.useEmail && this.state.email === "") {
-            error.set("emailfield", true);
+            error.set(FormFieldNames.EmailField, true);
             isInvalid = true;
         } else {
-            error.set("emailfield", false);
+            error.set(FormFieldNames.EmailField, false);
         }
 
         if (this.state.selectedHost === "") {
-            error.set("listfield", true);
+            error.set(FormFieldNames.ListField, true);
             isInvalid = true;
         } else {
-            error.set("listfield", false);
+            error.set(FormFieldNames.ListField, false);
         }
 
         this.setState({
@@ -148,10 +107,9 @@ class QueryForm extends React.Component<PropsDataTypes, FormDataTypes> {
         let error = this.state.error;
 
         if (isNaN(+number) || number < 1 || number > 50) {
-            error.set("recordfield", true);
-            console.log(error.get("recordfield"));
+            error.set(FormFieldNames.RecordField, true);
         } else {
-            error.set("recordfield", false);
+            error.set(FormFieldNames.RecordField, false);
         }
 
         this.setState({
@@ -170,7 +128,7 @@ class QueryForm extends React.Component<PropsDataTypes, FormDataTypes> {
             });
         } else {
             let error = this.state.error;
-            error.set("textfield", false);
+            error.set(FormFieldNames.TextField, false);
 
             this.setState({
                 fasta: fileList[0],
@@ -182,7 +140,7 @@ class QueryForm extends React.Component<PropsDataTypes, FormDataTypes> {
 
     handleHostListChange(e: React.ChangeEvent<HTMLSelectElement>) {
         let error = this.state.error;
-        error.set("listfield", false);
+        error.set(FormFieldNames.ListField, false);
         this.setState({
             selectedHost: e.target.value,
             error: error,
@@ -200,9 +158,9 @@ class QueryForm extends React.Component<PropsDataTypes, FormDataTypes> {
         let error = this.state.error;
 
         if (!pattern.exec(e.target.value)) {
-            error.set("emailfield", true);
+            error.set(FormFieldNames.EmailField, true);
         } else {
-            error.set("emailfield", false);
+            error.set(FormFieldNames.EmailField, false);
         }
 
         this.setState({
@@ -224,17 +182,17 @@ class QueryForm extends React.Component<PropsDataTypes, FormDataTypes> {
 
         if (name === "threshold") {
             if (isNaN(+tmp) || tmp < 1 || tmp > 6) {
-                error.set("thresholdfield", true);
+                error.set(FormFieldNames.ThresholdField, true);
             } else {
-                error.set("thresholdfield", false);
+                error.set(FormFieldNames.ThresholdField, false);
             }
 
             LE.threshold = e.target.value;
         } else if (name === "minLength") {
             if (isNaN(+tmp) || tmp < 1) {
-                error.set("minLengthfield", true);
+                error.set(FormFieldNames.MinLengthField, true);
             } else {
-                error.set("minLengthfield", false);
+                error.set(FormFieldNames.MinLengthField, false);
             }
 
             LE.minLength = e.target.value;
@@ -250,9 +208,9 @@ class QueryForm extends React.Component<PropsDataTypes, FormDataTypes> {
         let error = this.state.error;
 
         if (!this.state.fasta && e.target.value === "") {
-            error.set("textfield", true);
+            error.set(FormFieldNames.TextField, true);
         } else {
-            error.set("textfield", false);
+            error.set(FormFieldNames.TextField, false);
         }
 
         this.setState({
@@ -265,24 +223,32 @@ class QueryForm extends React.Component<PropsDataTypes, FormDataTypes> {
         return (
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-3 gap-y-5 bg-yellow-50 p-3 rounded min-w-2/3 max-w-screen-lg">
                 <div>
+                    <label>Select a method to analyze</label>
                     <form id={this.props.formName} onSubmit={this.handleSubmit}>
-                        <label>Select a method to analyze</label>
                         <TypeInputs
                             type={this.state.type}
                             onChange={this.handleTypeChange}
                         />
-                        {errorFunction(
-                            this.state.error.get("textfield"),
-                            false,
-                            "This field should not be empty."
-                        )}
+                        <ErrorHint
+                            isInvalid={this.state.error.get(FormFieldNames.TextField)!}
+                            isBlockDisplay = {false}
+                            errorMessage={"This field should not be empty."}
+                        />
                         <textarea
                             rows={2}
                             className="w-full mt-1 rounded focus:ring-0"
                             onChange={this.handleTextChange}
                         ></textarea>
                         <div className="grid grid-cols-2">
-                            {/* <RecordInput records={this.state.requiredRecords} onChange={this.handleRecordChange} errorMessage={errorFunction(this.state.error.get("recordfield"))} /> */}
+                            <RecordInput
+                                records={this.state.requiredRecords}
+                                onChange={this.handleRecordChange}
+                                errorMessage={
+                                    <ErrorHint
+                                        isInvalid={this.state.error.get(FormFieldNames.RecordField)!}
+                                    />
+                                }
+                            />
                             <FileInput
                                 hidden={this.state.type !== "Sequence"}
                                 fileName={this.state.fileName}
@@ -297,11 +263,13 @@ class QueryForm extends React.Component<PropsDataTypes, FormDataTypes> {
                         formName={this.props.formName}
                         hostsList={this.props.hostsList}
                         selectedHost={this.state.selectedHost}
-                        errorMessage={errorFunction(
-                            this.state.error.get("listfield"),
-                            false,
-                            "Please choose one of hosts below."
-                        )}
+                        errorMessage={
+                            <ErrorHint
+                                isInvalid={this.state.error.get(FormFieldNames.ListField)!}
+                                isBlockDisplay = {false}
+                                errorMessage={"Please choose one of hosts below."}
+                            />
+                        }
                     />
                 </div>
                 <div className="grid grid-cols-2">
@@ -315,12 +283,14 @@ class QueryForm extends React.Component<PropsDataTypes, FormDataTypes> {
                             />
                             <span className="ml-2">
                                 send email <br />
-                                {errorFunction(
-                                    this.state.useEmail &&
-                                        this.state.error.get("emailfield"),
-                                    true,
-                                    "Please enter your email."
-                                )}
+                                <ErrorHint
+                                    isInvalid={
+                                        this.state.useEmail &&
+                                        this.state.error.get(FormFieldNames.EmailField)!
+                                    }
+                                    isBlockDisplay = {true}
+                                    errorMessage={"Please enter your email."}
+                                />
                             </span>
                         </label>
                         <input
@@ -346,8 +316,8 @@ class QueryForm extends React.Component<PropsDataTypes, FormDataTypes> {
                     <div
                         className={
                             "mt-2 col-span-2 border-2 rounded border-dashed px-2 py-2" +
-                            (this.state.error.get("thresholdfield") ||
-                            this.state.error.get("minLengthfield")
+                            (this.state.error.get(FormFieldNames.ThresholdField) ||
+                            this.state.error.get(FormFieldNames.MinLengthField)
                                 ? " border-red-400"
                                 : "")
                         }
@@ -359,10 +329,12 @@ class QueryForm extends React.Component<PropsDataTypes, FormDataTypes> {
                                 (threshold: 1~6)
                             </span>
                         </span>
-                        {errorFunction(
-                            this.state.error.get("thresholdfield") ||
-                                this.state.error.get("minLengthfield")
-                        )}
+                        <ErrorHint
+                            isInvalid={
+                                this.state.error.get(FormFieldNames.ThresholdField)! ||
+                                this.state.error.get(FormFieldNames.MinLengthField)!
+                            }
+                        />
                         <div className="flex justify-around">
                             <label>
                                 <span className="mr-2">Threshold:</span>
