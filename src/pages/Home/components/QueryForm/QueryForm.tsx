@@ -4,7 +4,16 @@ import { TypeInputs } from "../TypeInputs";
 import { FileInput } from "../FileInput";
 import { RecordInput } from "../RecordInput";
 import { ErrorHint } from "../ErrorHint";
-import { PropsDataTypes, FormDataTypes, FormFieldNames } from "./index.d";
+import { PropsDataTypes, FormDataTypes } from "./index.d";
+
+const enum FormFieldNames {
+    TextField = "textField",
+    RecordField = "recordField",
+    EmailField = "emailField",
+    ThresholdField = "thresholdField",
+    MinLengthField = "minLengthField",
+    ListField = "listField"
+}
 
 class QueryForm extends React.Component<PropsDataTypes, FormDataTypes> {
     constructor(props: PropsDataTypes) {

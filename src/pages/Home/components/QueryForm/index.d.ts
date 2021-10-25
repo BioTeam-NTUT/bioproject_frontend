@@ -24,13 +24,4 @@ interface OutputDataTypes {
     fasta?: Blob;
 }
 
-export const enum FormFieldNames {
-    TextField = "textField",
-    RecordField = "recordField",
-    EmailField = "emailField",
-    ThresholdField = "thresholdField",
-    MinLengthField = "minLengthField",
-    ListField = "listField"
-}
-
 export type { PropsDataTypes, FormDataTypes, OutputDataTypes };
