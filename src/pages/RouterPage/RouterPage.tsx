@@ -1,13 +1,8 @@
-import React from 'react';
-import {
-    BrowserRouter,
-    Route,
-    Switch,
-    Redirect
-} from "react-router-dom";
-import { Home } from '../Home';
-import { About } from '../About';
-import { Header } from '../../components/Header';
+import React from "react";
+import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
+import { Home } from "../Home";
+import { About } from "../About";
+import { Header } from "../../components/Header";
 
 const RouterPage = (props: {}) => {
     return (
@@ -21,11 +16,11 @@ const RouterPage = (props: {}) => {
                     <Home />
                 </Route>
                 <Route exact path="/">
-                  <About />
+                    <About />
                 </Route>
             </Switch>
         </BrowserRouter>
     );
-}
+};
 
 export default RouterPage;

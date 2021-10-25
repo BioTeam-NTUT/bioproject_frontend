@@ -1,3 +1,3 @@
-import RecordInput from './RecordInput';
+import RecordInput from "./RecordInput";
 
 export { RecordInput };
