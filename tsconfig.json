@@ -12,7 +12,7 @@
         "module": "commonjs",
         "moduleResolution": "Node",
         "resolveJsonModule": true,
-        "isolatedModules": false,
+        "isolatedModules": true,
         "preserveConstEnums": true,
         "noEmit": true,
         "jsx": "react-jsx"
