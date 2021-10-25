@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 // import {
 //     NavLink,
 //     Link
@@ -7,9 +7,7 @@ import React from 'react';
 const NavBar = (props: {}) => {
     return (
         <nav className="Header-nav">
-            <div className="nav">
-
-            </div>
+            <div className="nav"></div>
         </nav>
     );
 };

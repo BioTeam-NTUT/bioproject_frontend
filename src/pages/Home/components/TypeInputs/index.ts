@@ -1,3 +1,3 @@
-import TypeInputs from './TypeInputs';
+import TypeInputs from "./TypeInputs";
 
 export { TypeInputs };
