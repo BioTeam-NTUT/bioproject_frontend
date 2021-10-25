@@ -1,22 +1,18 @@
-import React from "react";
-import { BrowserRouter, Route, Switch } from "react-router-dom";
-import { Home } from "../Home";
-import { About } from "../About";
-import { Result } from "../Result";
-import { Header } from "../../components/Header";
-import { Loading } from "../Loading";
+import React from 'react';
+import {
+    BrowserRouter,
+    Route,
+    Switch
+} from "react-router-dom";
+import { Home } from '../Home';
+import { About } from '../About';
+import { Header } from '../../components/Header';
 
 const RouterPage = (props: {}) => {
     return (
         <BrowserRouter>
             <Header />
             <Switch>
-                <Route path="/loading">
-                    <Loading />
-                </Route>
-                <Route path="/result">
-                    <Result />
-                </Route>
                 <Route path="/about">
                     <About />
                 </Route>
@@ -26,6 +22,6 @@ const RouterPage = (props: {}) => {
             </Switch>
         </BrowserRouter>
     );
-};
+}
 
 export default RouterPage;

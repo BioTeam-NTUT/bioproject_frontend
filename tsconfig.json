@@ -1,21 +1,20 @@
 {
-    "compilerOptions": {
-        "target": "es2017",
-        "lib": ["DOM", "DOM.Iterable", "esnext"],
-        "types": ["vite/client"],
-        "allowJs": true,
-        "skipLibCheck": false,
-        "esModuleInterop": true,
-        "allowSyntheticDefaultImports": true,
-        "strict": true,
-        "forceConsistentCasingInFileNames": true,
-        "module": "commonjs",
-        "moduleResolution": "Node",
-        "resolveJsonModule": true,
-        "isolatedModules": true,
-        "preserveConstEnums": true,
-        "noEmit": true,
-        "jsx": "react-jsx"
-    },
-    "include": ["./src", "./decs.d.ts"]
+  "compilerOptions": {
+    "target": "es2015",
+    "lib": ["DOM", "DOM.Iterable", "esnext"],
+    "types": ["vite/client"],
+    "allowJs": false,
+    "skipLibCheck": false,
+    "esModuleInterop": false,
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "module": "esnext",
+    "moduleResolution": "Node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "jsx": "react-jsx"
+  },
+  "include": ["./src"]
 }

@@ -1,3 +1,3 @@
-import QueryForm from "./QueryForm";
+import QueryForm from './QueryForm';
 
-export { QueryForm };
+export { QueryForm }
