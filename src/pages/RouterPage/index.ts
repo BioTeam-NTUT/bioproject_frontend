@@ -1,3 +1,3 @@
-import RouterPage from "./RouterPage";
+import RouterPage from './RouterPage';
 
 export { RouterPage };
