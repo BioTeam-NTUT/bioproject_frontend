@@ -1,11 +1,19 @@
-import React from "react";
-import logo from "./logo.svg";
+import logo from "../../assets/logo.svg";
 import "./Header.css";
 import { Link } from "react-router-dom";
 import { NavBar } from "../NavBar";
 
-const Header = (props: {}) => {
-    const itemLists = ["Query", "Search"];
+const Header = (_: {}) => {
+    const itemLists = [
+        {
+            path: "/",
+            name: "Query",
+        },
+        {
+            path: "/search",
+            name: "Search",
+        },
+    ];
 
     return (
         <header className="flex">
