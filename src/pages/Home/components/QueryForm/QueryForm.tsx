@@ -12,7 +12,7 @@ const enum FormFieldNames {
     EmailField = "emailField",
     ThresholdField = "thresholdField",
     MinLengthField = "minLengthField",
-    ListField = "listField"
+    ListField = "listField",
 }
 
 class QueryForm extends React.Component<PropsDataTypes, FormDataTypes> {
@@ -239,8 +239,10 @@ class QueryForm extends React.Component<PropsDataTypes, FormDataTypes> {
                             onChange={this.handleTypeChange}
                         />
                         <ErrorHint
-                            isInvalid={this.state.error.get(FormFieldNames.TextField)!}
-                            isBlockDisplay = {false}
+                            isInvalid={
+                                this.state.error.get(FormFieldNames.TextField)!
+                            }
+                            isBlockDisplay={false}
                             errorMessage={"This field should not be empty."}
                         />
                         <textarea
@@ -254,7 +256,11 @@ class QueryForm extends React.Component<PropsDataTypes, FormDataTypes> {
                                 onChange={this.handleRecordChange}
                                 errorMessage={
                                     <ErrorHint
-                                        isInvalid={this.state.error.get(FormFieldNames.RecordField)!}
+                                        isInvalid={
+                                            this.state.error.get(
+                                                FormFieldNames.RecordField
+                                            )!
+                                        }
                                     />
                                 }
                             />
@@ -274,9 +280,15 @@ class QueryForm extends React.Component<PropsDataTypes, FormDataTypes> {
                         selectedHost={this.state.selectedHost}
                         errorMessage={
                             <ErrorHint
-                                isInvalid={this.state.error.get(FormFieldNames.ListField)!}
-                                isBlockDisplay = {false}
-                                errorMessage={"Please choose one of hosts below."}
+                                isInvalid={
+                                    this.state.error.get(
+                                        FormFieldNames.ListField
+                                    )!
+                                }
+                                isBlockDisplay={false}
+                                errorMessage={
+                                    "Please choose one of hosts below."
+                                }
                             />
                         }
                     />
@@ -295,9 +307,11 @@ class QueryForm extends React.Component<PropsDataTypes, FormDataTypes> {
                                 <ErrorHint
                                     isInvalid={
                                         this.state.useEmail &&
-                                        this.state.error.get(FormFieldNames.EmailField)!
+                                        this.state.error.get(
+                                            FormFieldNames.EmailField
+                                        )!
                                     }
-                                    isBlockDisplay = {true}
+                                    isBlockDisplay={true}
                                     errorMessage={"Please enter your email."}
                                 />
                             </span>
@@ -325,7 +339,9 @@ class QueryForm extends React.Component<PropsDataTypes, FormDataTypes> {
                     <div
                         className={
                             "mt-2 col-span-2 border-2 rounded border-dashed px-2 py-2" +
-                            (this.state.error.get(FormFieldNames.ThresholdField) ||
+                            (this.state.error.get(
+                                FormFieldNames.ThresholdField
+                            ) ||
                             this.state.error.get(FormFieldNames.MinLengthField)
                                 ? " border-red-400"
                                 : "")
@@ -340,8 +356,12 @@ class QueryForm extends React.Component<PropsDataTypes, FormDataTypes> {
                         </span>
                         <ErrorHint
                             isInvalid={
-                                this.state.error.get(FormFieldNames.ThresholdField)! ||
-                                this.state.error.get(FormFieldNames.MinLengthField)!
+                                this.state.error.get(
+                                    FormFieldNames.ThresholdField
+                                )! ||
+                                this.state.error.get(
+                                    FormFieldNames.MinLengthField
+                                )!
                             }
                         />
                         <div className="flex justify-around">

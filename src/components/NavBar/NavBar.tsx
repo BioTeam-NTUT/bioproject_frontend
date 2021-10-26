@@ -1,20 +1,22 @@
-import React from "react";
 import "./NavBar.css";
-// import {
-//     NavLink,
-//     Link
-// } from 'react-router-dom';
+import { NavLink } from "react-router-dom";
 
+interface NavItem {
+    path: string;
+    name: string;
+}
 interface PropsDataTypes {
-    contents: Array<string>;
+    contents: Array<NavItem>;
     // currentPage: string;
     // onChange: (e: string) => void;
 }
 
 const NavBar = (props: PropsDataTypes) => {
-    const listItems = props.contents.map((name) => (
-        <li className="">
-            <a href="#">{name}</a>
+    const listItems = props.contents.map((item) => (
+        <li key={item.name}>
+            <NavLink exact to={item.path} activeStyle={{ opacity: 1.0 }}>
+                {item.name}
+            </NavLink>
         </li>
     ));
 
