@@ -1,4 +1,3 @@
-import React from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import { Home } from "../Home";
 import { About } from "../About";
@@ -6,7 +5,7 @@ import { Result } from "../Result";
 import { Header } from "../../components/Header";
 import { Loading } from "../Loading";
 
-const RouterPage = (props: {}) => {
+const RouterPage = (_: {}) => {
     return (
         <BrowserRouter>
             <Header />
@@ -14,13 +13,13 @@ const RouterPage = (props: {}) => {
                 <Route path="/loading">
                     <Loading />
                 </Route>
-                <Route path="/result">
+                <Route exact path="/result">
                     <Result />
                 </Route>
-                <Route path="/about">
+                <Route exact path="/about">
                     <About />
                 </Route>
-                <Route path="/">
+                <Route exact path="/">
                     <Home />
                 </Route>
             </Switch>

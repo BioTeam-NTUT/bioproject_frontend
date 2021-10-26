@@ -1,4 +1,3 @@
-import React from "react";
 import "./VirusData.css";
 interface VirusBasicDataProperty {
     virusName: string;

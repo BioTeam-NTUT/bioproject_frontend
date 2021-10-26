@@ -93,16 +93,14 @@ class Result extends React.Component<{}, ResultDataTypes> {
         let endPosition = parseInt(arr[1]);
         return [startPosition, endPosition];
     }
-    SetVirusStructureStyle(object: Object) {
+
+    setVirusStructureStyle(object: Object) {
         let v = this.state.molglviewer;
         for (const [key, value] of Object.entries(object)) {
             let range = this.parseRange(key);
             if (value) {
-                for(let i = range[0]; i <= range[1]; i++){
-                    v.setStyle(
-                        { serial: i },
-                        { sphere: { color: "red" } }
-                    );
+                for (let i = range[0]; i <= range[1]; i++) {
+                    v.setStyle({ serial: i }, { sphere: { color: "red" } });
                 }
                 /* v.setStyle({ chain: "B", invert: false }, { sphere: {} }); */
             } else {
@@ -122,7 +120,7 @@ class Result extends React.Component<{}, ResultDataTypes> {
             event,
             this.state.selectedFilteredEpitopeState
         );
-        this.SetVirusStructureStyle(newState);
+        this.setVirusStructureStyle(newState);
         this.setState({
             selectedFilteredEpitopeState: newState,
         });
@@ -133,7 +131,7 @@ class Result extends React.Component<{}, ResultDataTypes> {
             event,
             this.state.selectedNonFiltedEpitopeState
         );
-        this.SetVirusStructureStyle(newState);
+        this.setVirusStructureStyle(newState);
         this.setState({
             selectedNonFiltedEpitopeState: newState,
         });

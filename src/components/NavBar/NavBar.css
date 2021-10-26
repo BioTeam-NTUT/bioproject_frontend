@@ -1,0 +1,36 @@
+.header-nav ul {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    flex-wrap: nowrap;
+    list-style-type: none;
+    padding: 0;
+}
+
+.header-nav li:not(:last-child) {
+    margin-right: 10px;
+}
+
+.header-nav a {
+    display: block;
+    font-size: 20px;
+    color: whitesmoke;
+    opacity: 0.75;
+    text-decoration: none;
+    padding: 7px 15px;
+}
+
+.target {
+    position: absolute;
+    border-bottom: 4px solid transparent;
+    z-index: -1;
+    transform: translateX(-60px);
+}
+
+.header-nav a,
+.target {
+    transition: all 0.35s ease-in-out;
+}
+
+.current {
+}
