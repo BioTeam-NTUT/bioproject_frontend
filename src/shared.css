@@ -1,0 +1,9 @@
+@layer utilities {
+    .centered-card {
+        @apply container mx-auto p-5;
+    }
+
+    .card {
+        @apply container p-5;
+    }
+}

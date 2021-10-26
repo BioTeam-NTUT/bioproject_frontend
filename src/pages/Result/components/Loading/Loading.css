@@ -1,0 +1,4 @@
+.progress {
+    @apply bg-white rounded;
+    @apply mt-5;
+}

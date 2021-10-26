@@ -1,0 +1,93 @@
+#result {
+    padding-bottom: 50px;
+}
+.sequence_title {
+    color: white;
+}
+
+#bg-gradient-root {
+    background: linear-gradient(
+            241.75deg,
+            rgba(113, 107, 251, 0.25) 11.85%,
+            rgba(107, 126, 251, 0.05) 43.65%
+        ),
+        #333d5f;
+    margin-left: 5%;
+}
+.targetGrid {
+    background: #fff;
+    height: 200px;
+    width: 80%;
+    margin: 30px auto;
+    justify-content: space-between;
+    block-size: fit-content;
+    padding: 5px;
+    border-radius: 5px;
+}
+.representativeGrid {
+    background: #fff;
+    height: 200px;
+    width: 80%;
+    margin: 30px auto;
+    justify-content: space-between;
+    block-size: fit-content;
+    padding: 5px;
+    padding-bottom: 10px;
+    border-radius: 5px;
+}
+.header-text {
+    font-size: larger;
+    font-weight: 1000;
+}
+.treeWrapper {
+    background: #fff;
+    height: 600px;
+    width: 80%;
+    margin: 30px auto;
+    display: flex;
+    flex-direction: column;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+.epitope {
+    width: 80%;
+    margin: 30px auto;
+    display: flex;
+    justify-content: space-between;
+}
+.taxanomy_tree {
+    height: 100%;
+}
+.epitope_mol {
+    height: 100%;
+    position: relative;
+}
+.epitope_seq {
+    width: 45%;
+    background: #fff;
+    padding: 8px;
+    border-radius: 5px;
+}
+.epitope_mol_graph {
+    width: 50%;
+    background: #fff;
+    padding: 5px;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+}
+
+.k-checkbox:checked:hover,
+.k-checkbox:checked:focus {
+    background-color: #ff6358 !important;
+    border-color: #ff6358 !important;
+}
+
+.k-checkbox:checked::before {
+    transform: none;
+}
+
+.k-checkbox::before {
+    content: "";
+}

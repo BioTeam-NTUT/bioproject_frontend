@@ -1,4 +1,12 @@
-.taskID,
-.taskStatus {
-    font-size: 48px;
+.taskInfo {
+    @apply space-y-4 mt-4;
+    @apply bg-white rounded;
+}
+
+.taskTitle {
+    @apply text-3xl;
+}
+
+.task {
+    @apply text-1xl;
 }

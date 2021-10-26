@@ -38,7 +38,7 @@ class Home extends React.Component<{}, StateDataTypes> {
 
     render() {
         return (
-            <div className="min-h-screen flex flex-col justify-start items-center mt-28">
+            <div className="flex flex-col justify-start items-center mt-28">
                 <QueryForm
                     formName="query"
                     hostsList={this.state.hostsList}

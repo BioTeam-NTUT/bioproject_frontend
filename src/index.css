@@ -1,4 +1,3 @@
-/* ./src/index.css */
 @layer base {
     body {
         @apply font-sans;

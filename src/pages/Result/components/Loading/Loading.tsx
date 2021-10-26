@@ -1,17 +1,19 @@
-import "./Loading.css";
+import { LoadingProperty } from "./index.d";
 import { TaskInfo } from "../TaskInfo";
+import "./Loading.css";
 
-const Loading = (_: {}) => {
+const Loading = (props: LoadingProperty) => {
     return (
-        <div>
-            <TaskInfo id={taskSample.id} status={taskSample.status}></TaskInfo>
-        </div>
+        <>
+            <TaskInfo
+                id={props.taskInfo.id}
+                title={props.taskInfo.title}
+                status={props.taskInfo.status}
+                submittedTime={props.taskInfo.submittedTime}
+            ></TaskInfo>
+            <div className="centered-card progress">Test</div>
+        </>
     );
-};
-
-const taskSample = {
-    id: "YP_009552282",
-    status: "Searching",
 };
 
 export default Loading;

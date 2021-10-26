@@ -1,16 +1,20 @@
+import { TaskInfoProperty } from "./index.d";
 import "./TaskInfo.css";
-
-interface TaskInfoProperty {
-    id: string;
-    status: string;
-}
 
 const TaskInfo = (props: TaskInfoProperty) => {
     return (
-        <div className="taskInfo">
-            <label className="taskID">Task ID: {props.id}</label>
-            <br />
-            <label className="taskStatus">Task Status: {props.status}</label>
+        <div className="centered-card taskInfo">
+            <label className="taskTitle">Task title: {props.title}</label>
+            <hr />
+            <div>
+                <label className="task">Task ID: {props.id}</label>
+                <br />
+                <label className="task">Task Status: {props.status}</label>
+                <br />
+                <label className="task">
+                    Submitted At: {props.submittedTime.toTimeString()}
+                </label>
+            </div>
         </div>
     );
 };
