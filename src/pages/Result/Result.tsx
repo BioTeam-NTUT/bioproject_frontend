@@ -56,10 +56,7 @@ class Result extends React.Component<{}, ResultDataTypes> {
                 v.zoomTo();
                 v.render();
                 v.zoom(1.2, 1000);
-                v.setStyle({ chain: "B" }, { cartoon: { hidden: true } });
-                v.setStyle({ chain: "C" }, { cartoon: { hidden: true } });
-                v.setStyle({ chain: "D" }, { cartoon: { hidden: true } });
-                v.setStyle({ chain: "A" }, { cartoon: { color: "spectrum" } });
+                v.setStyle({}, { cartoon: { color: "spectrum" } });
                 //v.setStyle({ bonds: 0 }, { sphere: { radius: 0.5 } }); //water molecules
                 /* v.setStyle(
                     { resn: "PMP", byres: true, expand: 5 },
@@ -93,10 +90,8 @@ class Result extends React.Component<{}, ResultDataTypes> {
         let endPosition = parseInt(arr[1]);
         return [startPosition, endPosition];
     }
-
-    setVirusStructureStyle(object: Object) {
+    setMolViewerStyle(object: Object){
         let v = this.state.molglviewer;
-        v.setStyle({ chain: "A" }, { cartoon: { color: "spectrum" } });
         for (const [key, value] of Object.entries(object)) {
             let range = this.parseRange(key);
             if (value) {
@@ -116,12 +111,19 @@ class Result extends React.Component<{}, ResultDataTypes> {
             v.render();
         }
     }
+    setVirusStructureStyle(object: Object,object2: Object) {
+        let v = this.state.molglviewer;
+        v.setStyle({ chain: "A" }, { cartoon: { color: "spectrum" } });
+        this.setMolViewerStyle(object);
+        this.setMolViewerStyle(object2);
+        
+    }
     handleFiltedEpitopeSelectionChanged(event: GridSelectionChangeEvent) {
         const newState = this.getNewSelectedState(
             event,
             this.state.selectedFilteredEpitopeState
         );
-        this.setVirusStructureStyle(newState);
+        this.setVirusStructureStyle(newState,this.state.selectedNonFiltedEpitopeState);
         this.setState({
             selectedFilteredEpitopeState: newState,
         });
@@ -132,7 +134,7 @@ class Result extends React.Component<{}, ResultDataTypes> {
             event,
             this.state.selectedNonFiltedEpitopeState
         );
-        this.setVirusStructureStyle(newState);
+        this.setVirusStructureStyle(newState,this.state.selectedFilteredEpitopeState);
         this.setState({
             selectedNonFiltedEpitopeState: newState,
         });
