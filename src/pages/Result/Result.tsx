@@ -96,6 +96,7 @@ class Result extends React.Component<{}, ResultDataTypes> {
 
     setVirusStructureStyle(object: Object) {
         let v = this.state.molglviewer;
+        v.setStyle({ chain: "A" }, { cartoon: { color: "spectrum" } });
         for (const [key, value] of Object.entries(object)) {
             let range = this.parseRange(key);
             if (value) {
