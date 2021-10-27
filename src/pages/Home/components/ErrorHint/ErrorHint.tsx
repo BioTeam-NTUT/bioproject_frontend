@@ -1,9 +1,7 @@
-import React from "react";
-
 interface PropsDataType {
-    isInvalid: boolean,
-    isBlockDisplay?: boolean,
-    errorMessage?: string
+    isInvalid: boolean;
+    isBlockDisplay?: boolean;
+    errorMessage?: string;
 }
 
 const ErrorHint = (props: PropsDataType) => {
@@ -14,7 +12,9 @@ const ErrorHint = (props: PropsDataType) => {
     return (
         <span
             className={`font-medium text-red-500 text-xs 
-                    ${isInvalid ? "" : "hidden"} ${isBlockDisplay ? "block" : ""}`}
+                    ${isInvalid ? "" : "hidden"} ${
+                isBlockDisplay ? "block" : ""
+            }`}
         >
             {errorMessage}
         </span>

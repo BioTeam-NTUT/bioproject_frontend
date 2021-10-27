@@ -1,0 +1,4 @@
+.loading {
+    @apply container mx-auto text-center;
+    @apply mt-15;
+}

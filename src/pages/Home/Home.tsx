@@ -1,28 +1,14 @@
 import React from "react";
 import "./Home.css";
+import { FormDataTypes, HomeStates } from "./index.d";
 import { QueryForm } from "./components/QueryForm";
+import { RouteComponentProps } from "react-router-dom";
+import { sleep } from "../../helpers";
 
-interface StateDataTypes {
-    hostsList: Array<string>;
-}
-
-interface FormDataTypes {
-    type: string;
-    text: string;
-    requiredRecords: string;
-    useEmail: boolean;
-    email: string;
-    genTaxonomy: boolean;
-    LE: {
-        threshold: string;
-        minLength: string;
-    };
-    selectedHost: string | null;
-}
-
-class Home extends React.Component<{}, StateDataTypes> {
-    constructor(props: {}) {
+class Home extends React.Component<RouteComponentProps, HomeStates> {
+    constructor(props: RouteComponentProps) {
         super(props);
+        this.handleSubmit = this.handleSubmit.bind(this);
 
         this.state = {
             hostsList: [],
@@ -34,7 +20,11 @@ class Home extends React.Component<{}, StateDataTypes> {
             hostsList: ["Test1", "Test2", "Test3", "Test4", "Test5"],
         });
     }
-    handleSubmit(data: FormDataTypes) {}
+
+    async handleSubmit(data: FormDataTypes) {
+        await sleep(2000);
+        this.props.history.push(`/result/1`);
+    }
 
     render() {
         return (

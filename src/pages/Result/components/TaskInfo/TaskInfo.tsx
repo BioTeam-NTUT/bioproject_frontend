@@ -1,7 +1,7 @@
-import { TaskInfoProperty } from "./index.d";
+import { TaskInfoProperties } from "./index.d";
 import "./TaskInfo.css";
 
-const TaskInfo = (props: TaskInfoProperty) => {
+const TaskInfo = (props: TaskInfoProperties) => {
     return (
         <div className="centered-card taskInfo">
             <label className="taskTitle">Task title: {props.title}</label>

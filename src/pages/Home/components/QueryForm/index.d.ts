@@ -1,12 +1,14 @@
+import { FormDataTypes } from "../../index.d";
 interface PropsDataTypes {
     hostsList: Array<string>;
     formName: string;
-    onSubmit: (e: FormDataTypes) => void;
+    onSubmit: (e: FormDataTypes) => Promise<void>;
 }
 
-interface FormDataTypes extends OutputDataTypes {
+interface QueryFormStates extends OutputDataTypes {
     error: Map<string, boolean>;
     fileName: string;
+    isSubmitting: boolean;
 }
 
 interface OutputDataTypes {
@@ -17,11 +19,11 @@ interface OutputDataTypes {
     email: string;
     genTaxonomy: boolean;
     LE: {
-        threshold: string;
-        minLength: string;
+        threshold: number;
+        minLength: number;
     };
     selectedHost: string;
     fasta?: Blob;
 }
 
-export type { PropsDataTypes, FormDataTypes, OutputDataTypes };
+export type { PropsDataTypes, QueryFormStates, OutputDataTypes };

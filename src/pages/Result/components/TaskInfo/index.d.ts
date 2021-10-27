@@ -1,8 +1,8 @@
-interface TaskInfoProperty {
+interface TaskInfoProperties {
     id: string;
     title: string;
     status: string;
     submittedTime: Date;
 }
 
-export { TaskInfoProperty };
+export { TaskInfoProperties };

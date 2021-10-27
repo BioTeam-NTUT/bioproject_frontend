@@ -1,8 +1,8 @@
-import { LoadingProperty } from "./index.d";
+import { WaitingProgressProperties } from "./index.d";
 import { TaskInfo } from "../TaskInfo";
-import "./Loading.css";
+import "./WaitingProgress.css";
 
-const Loading = (props: LoadingProperty) => {
+const WaitingProgress = (props: WaitingProgressProperties) => {
     return (
         <>
             <TaskInfo
@@ -16,4 +16,4 @@ const Loading = (props: LoadingProperty) => {
     );
 };
 
-export default Loading;
+export default WaitingProgress;

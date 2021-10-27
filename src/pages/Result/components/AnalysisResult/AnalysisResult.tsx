@@ -1,6 +1,6 @@
 import React from "react";
 import "@progress/kendo-theme-default/scss/grid/_index.scss";
-import "./Result.css";
+import "./AnalysisResult.css";
 import { VirusData } from "../VirusData";
 import {
     Grid,
@@ -10,18 +10,18 @@ import {
 } from "@progress/kendo-react-grid";
 
 import { getter } from "@progress/kendo-react-common";
-
+import $ from "jquery";
 import Tree from "react-d3-tree";
 const $3Dmol = window.$3Dmol;
 
-interface ResultDataTypes {
+interface AnalysisResultStates {
     selectedFilteredEpitopeState: { [string: string]: boolean | number[] };
     selectedNonFiltedEpitopeState: { [string: string]: boolean | number[] };
     molglviewer: any;
     selectedFilteredEpitopeRange: { [range: string]: boolean | number[] };
 }
 
-class AnalysisResult extends React.Component<{}, ResultDataTypes> {
+class AnalysisResult extends React.Component<{}, AnalysisResultStates> {
     constructor(props: {}) {
         super(props);
 
@@ -307,15 +307,14 @@ let representativeVirus = [
 ];
 
 let testVirus = {
-    virusName: "Singapore grouper iridovirus(SGIV)",
-    accessionNumber: "AY521625",
+    virusName: "Singapore grouper iridovirus(SGIV) - Major capsid protein",
+    accessionNumber: "Q5YFJ3",
     organism: "Singapore grouper iridovirus",
     taxonomyID: "262968",
     taxonomyPath:
         "Viruses › Varidnaviria › Bamfordvirae › Nucleocytoviricota › Megaviricetes › Pimascovirales › Iridoviridae › Alphairidovirinae › Ranavirus",
     knownStructure: "6OJN",
-    accessionNumberHyperLink:
-        "https://blast.ncbi.nlm.nih.gov/Blast.cgi#alnHdr_YP_009552282",
+    accessionNumberHyperLink: "https://www.uniprot.org/uniprot/Q5YFJ3",
 };
 
 let testDataForFiltered = [

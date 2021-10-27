@@ -1,10 +1,13 @@
 import React from "react";
+import { Loading } from "../../../../components/Loading";
+import { Oval } from "@agney/react-loading";
+
 import { HostList } from "../HostList";
 import { TypeInputs } from "../TypeInputs";
 import { FileInput } from "../FileInput";
 import { RecordInput } from "../RecordInput";
 import { ErrorHint } from "../ErrorHint";
-import { PropsDataTypes, FormDataTypes } from "./index.d";
+import { PropsDataTypes, QueryFormStates } from "./index.d";
 
 const enum FormFieldNames {
     TextField = "textField",
@@ -15,7 +18,7 @@ const enum FormFieldNames {
     ListField = "listField",
 }
 
-class QueryForm extends React.Component<PropsDataTypes, FormDataTypes> {
+class QueryForm extends React.Component<PropsDataTypes, QueryFormStates> {
     constructor(props: PropsDataTypes) {
         super(props);
 
@@ -27,8 +30,8 @@ class QueryForm extends React.Component<PropsDataTypes, FormDataTypes> {
             requiredRecords: "10",
             genTaxonomy: false,
             LE: {
-                threshold: "3",
-                minLength: "5",
+                threshold: 3,
+                minLength: 5,
             },
             selectedHost: "",
             error: new Map<string, boolean>([
@@ -40,6 +43,7 @@ class QueryForm extends React.Component<PropsDataTypes, FormDataTypes> {
                 [FormFieldNames.ListField, false],
             ]),
             fileName: "",
+            isSubmitting: false,
         };
 
         this.handleHostListChange = this.handleHostListChange.bind(this);
@@ -98,6 +102,10 @@ class QueryForm extends React.Component<PropsDataTypes, FormDataTypes> {
         e.preventDefault();
 
         if (this.isAllValid()) {
+            this.setState({
+                isSubmitting: true,
+            });
+            this.props.onSubmit(this.state);
         }
     }
 
@@ -196,7 +204,9 @@ class QueryForm extends React.Component<PropsDataTypes, FormDataTypes> {
                 error.set(FormFieldNames.ThresholdField, false);
             }
 
-            LE.threshold = e.target.value;
+            if (!isNaN(+tmp)) {
+                LE.threshold = tmp;
+            }
         } else if (name === "minLength") {
             if (isNaN(+tmp) || tmp < 1) {
                 error.set(FormFieldNames.MinLengthField, true);
@@ -204,7 +214,9 @@ class QueryForm extends React.Component<PropsDataTypes, FormDataTypes> {
                 error.set(FormFieldNames.MinLengthField, false);
             }
 
-            LE.minLength = e.target.value;
+            if (!isNaN(+tmp)) {
+                LE.minLength = tmp;
+            }
         }
 
         this.setState({
@@ -396,10 +408,18 @@ class QueryForm extends React.Component<PropsDataTypes, FormDataTypes> {
                 </div>
                 <div className="grid lg:grid-cols-4">
                     <button
+                        type="submit"
                         form={this.props.formName}
-                        className="text-white bg-purple-600 hover:bg-purple-700 font-bold focus:outline-none focus:ring-0 focus:ring-offset-0 col-start-3 self-end justify-self-end rounded-xl p-1"
+                        className="flex text-white bg-purple-600 hover:bg-purple-700 font-bold focus:outline-none focus:ring-0 focus:ring-offset-0 col-start-3 self-end justify-self-end rounded-xl p-1"
+                        disabled={this.state.isSubmitting}
                     >
-                        submit
+                        <Loading
+                            indicator={
+                                <Oval color="white" width="13" height="13" />
+                            }
+                            loading={this.state.isSubmitting}
+                        />
+                        <span className="ml-1">submit</span>
                     </button>
                 </div>
             </div>

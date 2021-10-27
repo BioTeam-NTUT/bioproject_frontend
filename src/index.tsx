@@ -1,6 +1,5 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import "jquery";
 import "virtual:windi.css";
 import "virtual:windi-devtools";
 import "./index.css";
