@@ -263,7 +263,7 @@ class QueryForm extends React.Component<PropsDataTypes, QueryFormStates> {
                             onChange={this.handleTextChange}
                         ></textarea>
                         <div className="grid grid-cols-2">
-                            <RecordInput
+                            {/* <RecordInput
                                 records={this.state.requiredRecords}
                                 onChange={this.handleRecordChange}
                                 errorMessage={
@@ -275,7 +275,7 @@ class QueryForm extends React.Component<PropsDataTypes, QueryFormStates> {
                                         }
                                     />
                                 }
-                            />
+                            /> */}
                             <FileInput
                                 hidden={this.state.type !== "Sequence"}
                                 fileName={this.state.fileName}

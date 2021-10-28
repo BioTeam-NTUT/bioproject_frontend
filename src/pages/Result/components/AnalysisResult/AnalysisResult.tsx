@@ -56,7 +56,7 @@ class AnalysisResult extends React.Component<{}, AnalysisResultStates> {
                 v.zoomTo();
                 v.render();
                 v.zoom(1.2, 1000);
-                v.setStyle({}, { cartoon: { color: "spectrum" } });
+                v.setStyle({}, { cartoon: { color: "#d3d3d3" } });
                 //v.setStyle({ bonds: 0 }, { sphere: { radius: 0.5 } }); //water molecules
                 /* v.setStyle(
                     { resn: "PMP", byres: true, expand: 5 },
@@ -90,30 +90,27 @@ class AnalysisResult extends React.Component<{}, AnalysisResultStates> {
         let endPosition = parseInt(arr[1]);
         return [startPosition, endPosition];
     }
-    setMolViewerStyle(objectState: Object){
+    setMolViewerStyle(objectState: Object) {
         let v = this.state.molglviewer;
         for (const [key, value] of Object.entries(objectState)) {
             let range = this.parseRange(key);
             if (value) {
                 for (let i = range[0]; i <= range[1]; i++) {
-                    v.setStyle({ serial: i }, { sphere: { color: "red" } });
+                    v.setStyle({ resi: i }, { cartoon: { color: "red" } });
                 }
                 /* v.setStyle({ chain: "B", invert: false }, { sphere: {} }); */
             } else {
                 for (let i = range[0]; i <= range[1]; i++) {
-                    v.setStyle(
-                        { serial: i },
-                        { cartoon: { color: "spectrum" } }
-                    );
+                    v.setStyle({ resi: i }, { cartoon: { color: "#d3d3d3" } });
                 }
                 //v.setStyle({ chain: "B", invert: false }, { cartoon: {} });
             }
-            v.render();
         }
+        v.render();
     }
-    setVirusStructureStyle(object: Object,otherFilteredObject: Object) {
+    setVirusStructureStyle(object: Object, otherFilteredObject: Object) {
         let v = this.state.molglviewer;
-        v.setStyle({}, { cartoon: { color: "spectrum" } });
+        v.setStyle({}, { cartoon: { color: "#d3d3d3" } });
         this.setMolViewerStyle(object);
         this.setMolViewerStyle(otherFilteredObject);
     }
@@ -122,7 +119,10 @@ class AnalysisResult extends React.Component<{}, AnalysisResultStates> {
             event,
             this.state.selectedFilteredEpitopeState
         );
-        this.setVirusStructureStyle(newState, this.state.selectedNonFiltedEpitopeState);
+        this.setVirusStructureStyle(
+            newState,
+            this.state.selectedNonFiltedEpitopeState
+        );
         this.setState({
             selectedFilteredEpitopeState: newState,
         });
@@ -133,7 +133,10 @@ class AnalysisResult extends React.Component<{}, AnalysisResultStates> {
             event,
             this.state.selectedNonFiltedEpitopeState
         );
-        this.setVirusStructureStyle(newState, this.state.selectedFilteredEpitopeState);
+        this.setVirusStructureStyle(
+            newState,
+            this.state.selectedFilteredEpitopeState
+        );
         this.setState({
             selectedNonFiltedEpitopeState: newState,
         });
@@ -321,19 +324,19 @@ let testVirus = {
 
 let testDataForFiltered = [
     {
-        range: "10-36",
+        range: "50-80",
         aminoAcids: "qikdllvsss",
     },
     {
-        range: "2-10",
+        range: "42-60",
         aminoAcids: "tdldttlvlv",
     },
     {
-        range: "3-15",
+        range: "80-100",
         aminoAcids: "sgdlsmlvll",
     },
     {
-        range: "4-20",
+        range: "200-250",
         aminoAcids: "gviedikhsp",
     },
 ];

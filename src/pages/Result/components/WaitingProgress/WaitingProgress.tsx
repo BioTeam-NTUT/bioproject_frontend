@@ -11,7 +11,7 @@ const WaitingProgress = (props: WaitingProgressProperties) => {
                 status={props.taskInfo.status}
                 submittedTime={props.taskInfo.submittedTime}
             ></TaskInfo>
-            <div className="centered-card progress">Test</div>
+            {/* <div className="centered-card progress"></div> */}
         </>
     );
 };

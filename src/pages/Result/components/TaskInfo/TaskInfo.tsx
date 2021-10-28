@@ -1,5 +1,7 @@
 import { TaskInfoProperties } from "./index.d";
+import { Loading } from "../../../../components/Loading";
 import "./TaskInfo.css";
+import { Oval } from "@agney/react-loading";
 
 const TaskInfo = (props: TaskInfoProperties) => {
     return (
@@ -9,8 +11,13 @@ const TaskInfo = (props: TaskInfoProperties) => {
             <div>
                 <label className="task">Task ID: {props.id}</label>
                 <br />
-                <label className="task">Task Status: {props.status}</label>
-                <br />
+                <label className="flex items-center task">
+                    Task Status: {props.status}
+                    <Loading
+                        indicator={<Oval color="gray" width="25" height="25" />}
+                        loading={true}
+                    />
+                </label>
                 <label className="task">
                     Submitted At: {props.submittedTime.toTimeString()}
                 </label>
