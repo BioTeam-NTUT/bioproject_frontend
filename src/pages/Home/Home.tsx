@@ -17,7 +17,10 @@ class Home extends React.Component<RouteComponentProps, HomeStates> {
 
     componentDidMount() {
         this.setState({
-            hostsList: ["Test1", "Test2", "Test3", "Test4", "Test5"],
+            hostsList: [
+                "Redspotted grouper(Epinephelus akaara)",
+                "Tiger grouper(Epinephelus fuscoguttatus)",
+            ],
         });
     }
 
