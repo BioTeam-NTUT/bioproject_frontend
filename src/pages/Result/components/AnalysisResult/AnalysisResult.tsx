@@ -191,7 +191,7 @@ class AnalysisResult extends React.Component<{}, AnalysisResultStates> {
                 <div className="epitope">
                     <div className="epitope_seq">
                         <div className="epitope_seq_filtered">
-                            <h1 className="header-text">Filtered Epitope</h1>
+                            <h1 className="header-text">Epitope Candidates</h1>
                             <Grid
                                 style={{ height: "300px" }}
                                 data={testDataForFiltered.map((item) => ({
@@ -226,9 +226,7 @@ class AnalysisResult extends React.Component<{}, AnalysisResultStates> {
                             </Grid>
                         </div>
                         <div className="epitope_seq_non_filtered">
-                            <h1 className="header-text">
-                                Non-filtered Epitope
-                            </h1>
+                            <h1 className="header-text">Rest of epitopes</h1>
                             <Grid
                                 style={{ height: "300px" }}
                                 data={testDataForNonFiltered.map((item) => ({
@@ -265,7 +263,9 @@ class AnalysisResult extends React.Component<{}, AnalysisResultStates> {
                         </div>
                     </div>
                     <div className="epitope_mol_graph">
-                        <h1 className="header-text">Tertiary Structure</h1>
+                        <h1 className="header-text">
+                            Protein Structure Viewer
+                        </h1>
                         <div className="epitope_mol" id="result_mol"></div>
                     </div>
                 </div>
